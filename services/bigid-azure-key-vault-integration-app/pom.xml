@@ -120,7 +120,7 @@
                         <configuration>
                             <classifier>spring-boot</classifier>
                             <mainClass>
-                                com.basicapp.bigid.azurekeyvaultapp.BasicDemoAppApplication
+                                com.bigid.azurekeyvaultapp.BasicDemoAppApplication
                             </mainClass>
                         </configuration>
                     </execution>

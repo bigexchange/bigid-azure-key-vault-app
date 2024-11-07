@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.bigid.appinfrastructure", "com.basicapp.bigid.azurekeyvaultapp"})
+@ComponentScan(basePackages = {"com.bigid.appinfrastructure", "com.bigid.azurekeyvaultapp"})
 public class BasicDemoAppApplication {
 
 	public static void main(String[] args) {

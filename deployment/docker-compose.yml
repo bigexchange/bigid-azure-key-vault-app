@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  bigid-azure-key-vault-app:
+    build:
+      context: .
+    image: bigexchange/bigid-azure-key-vault-app:v2.5.2.181
+    container_name: bigid-azure-key-vault-app
+    ports:
+      - "8083:8083"

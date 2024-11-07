@@ -17,7 +17,7 @@ replicaCount: 1
 
 image:
   registry: 835626702473.dkr.ecr.us-east-1.amazonaws.com
-  repository: your app image name
+  repository: bigexchange/bigid-azure-key-vault-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "1.1.0-2022-05-09"
@@ -36,7 +36,7 @@ serviceAccount:
   name: "basic-demo"
 
 podAnnotations:
-  ad.datadoghq.com/bigid-basic-demo.logs: '[{"source": "java", "service": "basic-demo"}]'
+  ad.datadoghq.com/bigid-azure-key-vault-app.logs: '[{"source": "java", "service": "basic-demo"}]'
 
 ## Update strategy - only really applicable for deployments with RWO PVs attached
 ## If replicas = 1, an update can get "stuck", as the previous pod remains attached to the

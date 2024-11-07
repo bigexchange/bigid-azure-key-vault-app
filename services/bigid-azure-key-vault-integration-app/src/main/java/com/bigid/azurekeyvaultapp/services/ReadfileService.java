@@ -1,4 +1,4 @@
-package com.basicapp.basicdemoapp.services;
+package com.bigid.azurekeyvaultapp.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

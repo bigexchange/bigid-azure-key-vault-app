@@ -1,0 +1,36 @@
+app_name - a short name for the app (will be displayed in BigID)
+description - a short description of the purpose of the app
+Category - which category is the app related to (possible values - privacy / protection / perspective / utilities - default will be utilities)
+Version - the current version of the app - should be from the format x.x.x (e.g - 1.0.0)
+License_type - is the app free or not (possible values - FREE / PAID)
+Vendor - a string that defines who is the owner of this app
+License_verification_key - a jwt token that defines the verification key
+
+global_params - an array of parameters which are general and should be used in any execution of an action in the app.
+    param_name - name of the parameter (same as being used in the app)
+    param_type - type (string / int / boolean)
+    is_cleartext - boolean field. In case of false - it will appear in BigID’s UI as hidden
+    param_description - short description of what the parameter means
+    default_value - can set a default value for that parameter
+    hint - a short example of an input for the parameter
+    param_priority
+    is_mandatory - boolean
+
+actions - an array of the actions that the app can perform. Every action contains:
+    Action_id - the name of the action as it is related in the app
+    Description - short description of what the specific action should perform
+    Is_sync - is the action sync or async. Async action is such that it can update BigID regarding its progress.
+
+Action_params - an array of parameters which are required for the specific action.
+    param_name - name of the parameter (same as being used in the app)
+    param_type - type (string / int / boolean)
+    is_cleartext - boolean field. In case of false - it will appear in BigID’s UI as hidden
+    param_description - short description of what the parameter means
+    default_value - can set a default value for that parameter
+    param_priority
+    is_mandatory - boolean
+
+Permissions (Optional) - an array of custom permissions, that will eventually be added in BigID core once the app is installed. These can be granted to a role in BigID, which will be assigned to a user. Then, the given relevant permissions will be sent through the UI-SDK. These permissions are relevant for applications which serve UI, and would do differentiate that UI between the different permissions.
+    action - this value will be set as the permission action in BigID.
+    label - the display name in BigID permissions selection page
+    description - a tooltip which is added to the permission in the BigID permissions selection page.

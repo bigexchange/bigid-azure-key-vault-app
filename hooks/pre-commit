@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Check project structure:
+# root:
+#   README.*
+#   deployment \
+#     *-compose.yaml
+#     helm-charts \
+#       Chart.yaml
+#       values.yaml
+#   services \
+#     app-folder\
+#       DockerFile
+
+REQUIRED_FILES=('./README.*' './deployment/helm-charts/values.yaml' './deployment/helm-charts/Chart.yaml' './services/*/DockerFile')
+VALID_VERSIONS=('debian' 'alpine')
+
+for FILE in ${REQUIRED_FILES[@]}
+do
+  if [[ ! -e "${FILE}" ]]
+  then
+    echo "Project Structure - ${FILE} does not exist!"
+    exit 1
+  fi
+done
+
+# check base version in DockerFile is valid from the VALID_VERSIONS
+
+while read line
+  do
+    case $line in
+    "FROM"*)
+
+  VERSION=$(echo ${line} | cut -d " " -f 2)
+  for VALID_VERSION in ${VALID_VERSIONS[@]}
+  do
+    case "${VERSION}" in
+    *"${VALID_VERSION}"*) exit 0;;
+    esac
+    done
+  esac
+
+done < ./services/basic-demo-app/DockerFile
+
+echo "Base version ${VERSION} in DockerFile is not valid, should use one of those -  ${VALID_VERSIONS[@]}"
+exit 1

@@ -1,4 +1,4 @@
-package com.basicapp.basicdemoapp;
+package com.basicapp.bigid.azurekeyvaultapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

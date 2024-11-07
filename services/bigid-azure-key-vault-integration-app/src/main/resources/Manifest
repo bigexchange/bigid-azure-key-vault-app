@@ -1,7 +1,7 @@
 {
-  "app_name": "Basic demo app",
+  "app_name": "Bigid Azure Key Vault App",
   "version": "2.0.176",
-  "description": "The app is an app template, created for demonstrating the capabilities of such apps",
+  "description": "Exchange metadata between BigID and Azure Key Vault",
   "category": "privacy",
   "license_type":"FREE",
   "license_verification_key": "",

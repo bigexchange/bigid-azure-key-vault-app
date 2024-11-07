@@ -1,4 +1,4 @@
-package com.basicapp.basicdemoapp.dto;
+package com.bigid.azurekeyvaultapp.dto;
 
 import com.bigid.appinfrastructure.dto.ActionResponseDetails;
 import com.bigid.appinfrastructure.dto.StatusEnum;

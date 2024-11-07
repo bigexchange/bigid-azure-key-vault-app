@@ -1,4 +1,4 @@
-package com.basicapp.basicdemoapp.controllers;
+package com.bigid.azurekeyvaultapp.controllers;
 
 import com.bigid.appinfrastructure.controllers.AbstractLogoController;
 import org.springframework.stereotype.Controller;

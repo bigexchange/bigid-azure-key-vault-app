@@ -1,4 +1,4 @@
-package com.bigid.azurekeyvaultapp.services;
+package com.bigid.azurekeyvaultapp.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Service
-public class ReadfileService {
-    static Logger logger = LoggerFactory.getLogger(ReadfileService.class);
-    private ReadfileService() {}
+public class FileUtils {
+    static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
+    private FileUtils() {
+    }
 
     public static String readFileContentFromInputStream(InputStream inputStream) {
         StringBuilder contentBuilder = new StringBuilder();
@@ -21,10 +23,10 @@ public class ReadfileService {
 
             BufferedReader reader = new BufferedReader(isReader);
             String line;
-            while((line = reader.readLine())!= null){
+            while ((line = reader.readLine()) != null) {
                 contentBuilder.append(line);
             }
-        } catch (IOException ex){
+        } catch (IOException ex) {
             logger.error(ex.getMessage());
         }
 

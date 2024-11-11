@@ -1,7 +1,7 @@
-package com.bigid.azurekeyvaultapp.controllers;
+package com.bigid.azurekeyvaultapp.controller;
 
 import com.bigid.appinfrastructure.controllers.AbstractManifestController;
-import com.bigid.azurekeyvaultapp.services.ReadfileService;
+import com.bigid.azurekeyvaultapp.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -19,9 +19,9 @@ public class ManifestController extends AbstractManifestController {
         try {
             ClassPathResource resource = new ClassPathResource("Manifest");
             InputStream inputStream = resource.getInputStream();
-            return ReadfileService.readFileContentFromInputStream(inputStream);
+            return FileUtils.readFileContentFromInputStream(inputStream);
 
-        } catch (IOException ex){
+        } catch (IOException ex) {
             logger.error(ex.getMessage());
         }
 

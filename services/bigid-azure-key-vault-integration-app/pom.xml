@@ -21,18 +21,18 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-<!--            <version>3.0.2</version>-->
-		</dependency>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!--            <version>3.0.2</version>-->
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -67,16 +67,34 @@
             <version>2.1.174-SNAPSHOT</version>
         </dependency>
 
-<!--        Use this in order to get the infra from local jar dependency (external BigID developer)-->
-<!--        <dependency>-->
-<!--            <groupId>com.bigid</groupId>-->
-<!--            <artifactId>app-infrastructure</artifactId>-->
-<!--            <version>1.0.138-SNAPSHOT</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>-->
-<!--                ${project.basedir}/src/main/resources/app-infrastructure-1.0.138-SNAPSHOT-jar-with-dependencies.jar-->
-<!--            </systemPath>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-keyvault</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.14.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-secrets</artifactId>
+            <version>4.9.0</version>
+        </dependency>
+
+
+        <!--        Use this in order to get the infra from local jar dependency (external BigID developer)-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.bigid</groupId>-->
+        <!--            <artifactId>app-infrastructure</artifactId>-->
+        <!--            <version>1.0.138-SNAPSHOT</version>-->
+        <!--            <scope>system</scope>-->
+        <!--            <systemPath>-->
+        <!--                ${project.basedir}/src/main/resources/app-infrastructure-1.0.138-SNAPSHOT-jar-with-dependencies.jar-->
+        <!--            </systemPath>-->
+        <!--        </dependency>-->
 
     </dependencies>
 
@@ -127,28 +145,28 @@
                 </executions>
             </plugin>
 
-<!--        Use this in order to get the infra from local jar dependency (external BigID developer)-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-install-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <groupId>com.bigid.appinfra</groupId>-->
-<!--                    <artifactId>app-infrastructure</artifactId>-->
-<!--                    <version>1.0.137-LOCAL</version>-->
-<!--                    <packaging>jar</packaging>-->
-<!--                    <file>${basedir}/src/main/resources/app-infrastructure-1.0.138-SNAPSHOT-jar-with-dependencies.jar</file>-->
-<!--                    <generatePom>true</generatePom>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>install-jar-lib</id>-->
-<!--                        <goals>-->
-<!--                            <goal>install-file</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>validate</phase>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--        Use this in order to get the infra from local jar dependency (external BigID developer)-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-install-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <groupId>com.bigid.appinfra</groupId>-->
+            <!--                    <artifactId>app-infrastructure</artifactId>-->
+            <!--                    <version>1.0.137-LOCAL</version>-->
+            <!--                    <packaging>jar</packaging>-->
+            <!--                    <file>${basedir}/src/main/resources/app-infrastructure-1.0.138-SNAPSHOT-jar-with-dependencies.jar</file>-->
+            <!--                    <generatePom>true</generatePom>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>install-jar-lib</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>install-file</goal>-->
+            <!--                        </goals>-->
+            <!--                        <phase>validate</phase>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
         </plugins>
     </build>

@@ -1,4 +1,4 @@
-package com.bigid.azurekeyvaultapp.controllers;
+package com.bigid.azurekeyvaultapp.controller;
 
 import com.bigid.appinfrastructure.controllers.AbstractTenantConfigurationController;
 import com.bigid.appinfrastructure.dto.TenantConfiguration;

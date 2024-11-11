@@ -3,37 +3,109 @@
   "version": "2.0.176",
   "description": "Exchange metadata between BigID and Azure Key Vault",
   "category": "privacy",
-  "license_type":"FREE",
-  "license_verification_key": "",
+  "license_type": "FREE",
+  "license_verification_key": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRURDIEludGVncmF0aW9uIEFwcCIsImNhdGVnb3J5IjoiT3RoZXIiLCJsaWNlbnNlVHlwZSI6InBhaWQiLCJ2ZW5kb3IiOiJCaWdJRCIsInZlcnNpb24iOiIyLjIuMC4xNTgifQ.c7Acf279OwePB5dsJ4oaDmhtdRNtB_QW76taAccgZN8R71vg9ON7fvl9EzDqXDBNa2PZByUEJ8Gy56L_konv0JROEgVb-ZKUlM-SmIZSy9E1X9ueAQXJp4IANBGzHeyaKQh5zGDruCz4nlAhp2jzvmt8iU8rXYc2Qa8hFgJs0phKdJlilLD5Sj7gq4SA1X2lYFCikKEqJrQ1gD_iS1A0I-zA-Efcd4njR9qJAu3qxFdJtS6VIHI4forqiAOrBfIKtr9xTahikzgLKcWkViH8Xd87-ObzdRFsWkAxFC7zbNFI75oQAsVS1j1BNxc2aoiwPTVUGplFpA2FBiIBuYCE99KnyGqUFk0PtOmjp7oxVOd_KthUM2xLnEbZLru2IqaWb0mY2qjeGtiWKAcU7hAOmXD2TypsjkizZyIBad1XtHkPUqny73pcN_1kvieTs5rbfVubRJIFNbz2zCcXsNeqrXbhjf-b7ZCJGrsXECjvrHCDiFx1Nsp-5i4MVq7dY3Z1g8wJt1hrR9Rr3cF-nUgzDPNfvtWp2KtnoustTpNuSDfPoUQ4qw37cdDXfPNYQYNDvuOp2GHiKaEAhjxUcP0PYK9aBMVZEAOQGzG3BcBH3tbSM24m_2aAsUKsKOOPbTUelJVZzSI45vWeCDJQw6xn1WibDH_lnVz4-P-Jt-dHPvY",
   "vendor": "BigID",
   "global_params": [
     {
-      "param_name": "username",
+      "param_name": "vault_url",
+      "param_friendly_name": "Vault URL",
       "param_type": "String",
       "is_cleartext": true,
-      "param_description": "Username",
-      "default_value": "admin",
-      "hint": "put username here",
+      "param_description": "Azure Key Vault URL to authenticate with the vault",
+      "default_value": "",
+      "hint": "Azure login URL",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "scope",
+      "param_friendly_name": "Scope",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Scope url in Azure Key Vault",
+      "default_value": "https://vault.azure.net/.default",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "authentication_method",
+      "param_friendly_name": "Authentication Method",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Authentication method determines how to authenticate with Hashicorp vault",
+      "default_value": "App Role",
+      "param_priority": "primary",
+      "is_mandatory": true,
+      "input_type": "singleSelection",
+      "input_items": [
+        "Basic Authentication",
+        "Client Credentials"
+      ]
+    },
+    {
+      "param_name": "client_id",
+      "param_friendly_name": "Client ID",
+      "param_type": "String",
+      "is_cleartext": false,
+      "param_description": "Client ID for authenticating with Azure Key Vault",
+      "default_value": "",
+      "param_priority": "primary",
+      "is_mandatory": false
+    },
+    {
+      "param_name": "tenant_id",
+      "param_friendly_name": "Tenant ID",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Tenant ID for authenticating with Azure Key Vault",
+      "default_value": "",
+      "param_priority": "primary",
+      "is_mandatory": false,
+    },
+    {
+      "param_name": "client_secret",
+      "param_friendly_name": "Client cSecret",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Client Secret for authenticating with Azure Key Vault",
+      "default_value": "",
       "param_priority": "primary",
       "is_mandatory": false
     }
   ],
   "actions": [
     {
-      "action_id": "helloWorld",
-      "description": "Hello world action",
+      "action_id": "TestConnection",
+      "description": "Test connection to Azure Key Vault, will confirm if connection settings are working as expected",
       "is_sync": true,
+      "friendly_name": "Test Connection",
+      "action_params": [
+      ]
+    },
+    {
+      "action_id": "FetchCredentials",
+      "description": "Fetch secret fom Azure Key Vault, this can only be run from the credentials page",
+      "is_sync": true,
+      "friendly_name": "Fetch secret from Azure Key Vault",
       "action_params": [
         {
-          "param_name": "notMandatoryMultipleSelection",
+          "param_name": "credentialProviderCustomQuery",
           "param_type": "String",
           "is_cleartext": true,
-          "param_description": "Test a multi option param",
-          "default_value": "mVal3",
+          "param_description": "Custom Query",
+          "default_value": "{"secret_key":"mysecret"}",
           "param_priority": "primary",
-          "is_mandatory": false,
-          "input_type": "multipleSelection",
-          "input_items": ["mVal1", "mVal2", "mVal3", "mVal4", "mVal5"]
+          "is_mandatory": false
+        },
+        {
+          "param_name": "azureKeyVaultURL",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Specify Azure Key Vault Url",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
         }
       ]
     }
@@ -45,63 +117,63 @@
       "description": "This is an admin permission description"
     }
   ],
-    "custom_roles": [
+  "custom_roles": [
     {
       "name": "test",
-      "permissions": ["permission.tasks.edit"]
+      "permissions": [
+        "permission.tasks.edit"
+      ]
     }
   ],
   "integrations": {
-        "catalog": {
-          "filters": [
+    "catalog": {
+      "filters": [
+        {
+          "name": "Retention Policies",
+          "tag_name": "retention.policy"
+        },
+        {
+          "name": "Jurisdiction",
+          "tag_name": "jurisdiction"
+        }
+      ],
+      "columns": [
+        {
+          "name": "Retention",
+          "tag_name": "retention.policy",
+          "icon_name": "retention.policy"
+        }
+      ],
+      "object_details": {
+        "tab": {
+          "title": "Retention",
+          "deepLinkPath": "/api/v1/finding-object/",
+          "widgets": [
             {
-              "name": "Retention Policies",
-              "tag_name": "retention.policy"
+              "widgetId": "GRID",
+              "metadata": [
+                {
+                  "key": "policyHits.policyName",
+                  "label": "Policy"
+                },
+                {
+                  "key": "policyHits.policyType",
+                  "label": "Policy Type"
+                }
+              ]
             },
             {
-              "name": "Jurisdiction",
-              "tag_name": "jurisdiction"
+              "widgetId": "DATE",
+              "metadata": [
+                {
+                  "key": "sentToRemediation",
+                  "label": "Sent To Remediation"
+                }
+              ]
             }
-          ],
-          "columns": [
-            {
-              "name": "Retention",
-              "tag_name": "retention.policy",
-              "icon_name": "retention.policy"
-            }
-          ],
-          "object_details":
-            {
-              "tab": {
-                "title": "Retention",
-                "deepLinkPath": "/api/v1/finding-object/",
-                "widgets": [
-                  {
-                    "widgetId": "GRID",
-                    "metadata": [
-                      {
-                        "key": "policyHits.policyName",
-                        "label": "Policy"
-                      },
-                      {
-                        "key": "policyHits.policyType",
-                        "label": "Policy Type"
-                      }
-                    ]
-                  },
-                  {
-                    "widgetId": "DATE",
-                    "metadata": [
-                      {
-                        "key": "sentToRemediation",
-                        "label": "Sent To Remediation"
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
+          ]
         }
       }
+    }
   }
-
+}

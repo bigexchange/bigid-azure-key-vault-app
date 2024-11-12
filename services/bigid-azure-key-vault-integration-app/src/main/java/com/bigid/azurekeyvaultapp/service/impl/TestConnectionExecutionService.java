@@ -4,14 +4,12 @@ import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.StatusEnum;
 import com.bigid.appinfrastructure.externalconnections.BigIDProxy;
 import com.bigid.appinfrastructure.services.AbstractExecutionService;
+import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
 import com.bigid.azurekeyvaultapp.service.KeyVaultTokenService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -29,7 +27,7 @@ public class TestConnectionExecutionService extends AbstractExecutionService imp
     }
 
     @Override
-    public Triple<Boolean, String, Map<String, String>> performAction(ExecutionContext executionContext) {
+    public ActionResponseDto performAction(ExecutionContext executionContext) {
         try {
             log.info("Attempting to fetch an access token...");
             keyVaultTokenService.fetchAccessToken(executionContext);
@@ -39,7 +37,7 @@ public class TestConnectionExecutionService extends AbstractExecutionService imp
                     initializeResponse(executionContext, StatusEnum.COMPLETED, 1d, CONNECTION_SUCCESSFUL)
             );
             log.info(CONNECTION_SUCCESSFUL);
-            return Triple.of(true, CONNECTION_SUCCESSFUL, null);
+            return new ActionResponseDto(true, CONNECTION_SUCCESSFUL, null);
 
         } catch (RuntimeException e) {
             bigIDProxy.updateActionStatusToBigID(
@@ -48,12 +46,12 @@ public class TestConnectionExecutionService extends AbstractExecutionService imp
             );
             log.error(CONNECTION_FAILED + ": " + e.getMessage(), e);
 
-            return Triple.of(false, CONNECTION_FAILED, null);
+            return new ActionResponseDto(false, CONNECTION_FAILED, null);
         }
     }
 
     @Override
     public String getActionName() {
-        return "TestConnection";
+        return "test_connection";
     }
 }

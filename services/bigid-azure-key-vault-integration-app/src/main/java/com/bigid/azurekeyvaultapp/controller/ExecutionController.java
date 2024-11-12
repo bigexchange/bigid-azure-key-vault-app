@@ -4,6 +4,7 @@ import com.bigid.appinfrastructure.controllers.AbstractExecutionController;
 import com.bigid.appinfrastructure.dto.ActionResponseDetails;
 import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.StatusEnum;
+import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.dto.ActionResponseWithAdditionalDetails;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
 import org.apache.commons.lang3.tuple.Triple;
@@ -33,11 +34,11 @@ public class ExecutionController extends AbstractExecutionController {
             return unresolvedActionResponse(action, executionId);
         }
 
-        Triple<Boolean, String, Map<String, String>> statusMessageSecretTriple = executionService.performAction(executionContext);
+        ActionResponseDto actionResponseDto = executionService.performAction(executionContext);
 
-        return statusMessageSecretTriple.getLeft()
-                ? generateSuccessResponse(executionId, statusMessageSecretTriple.getMiddle(), statusMessageSecretTriple.getRight())
-                : generateFailedResponse(executionId, new Exception(statusMessageSecretTriple.getMiddle()));
+        return actionResponseDto.isSuccess()
+                ? generateSuccessResponse(executionId, actionResponseDto.getMessage(), actionResponseDto.getCredentialFields())
+                : generateFailedResponse(executionId, new Exception(actionResponseDto.getMessage()));
     }
 
     private ResponseEntity<ActionResponseDetails> generateSuccessResponse(String executionId, String message, Map<String, String> secretMap) {

@@ -24,17 +24,35 @@
       "param_type": "String",
       "is_cleartext": true,
       "param_description": "Scope url in Azure Key Vault",
-      "default_value": "https://vault.azure.net/.default",
+      "hint": "https://vault.azure.net/.default",
       "param_priority": "primary",
       "is_mandatory": true
+    },
+    {
+      "param_name": "username",
+      "param_friendly_name": "Username",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Azure Key Vault Username to authenticate with the vault",
+      "param_priority": "primary",
+      "is_mandatory": false
+    },
+    {
+      "param_name": "password",
+      "param_friendly_name": "Password",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Azure Key Vault Password to authenticate with the vault",
+      "param_priority": "primary",
+      "is_mandatory": false
     },
     {
       "param_name": "authentication_method",
       "param_friendly_name": "Authentication Method",
       "param_type": "String",
       "is_cleartext": true,
-      "param_description": "Authentication method determines how to authenticate with Hashicorp vault",
-      "default_value": "App Role",
+      "param_description": "Authentication method determines how to authenticate with Azure Key Vault",
+      "default_value": "Client Credentials",
       "param_priority": "primary",
       "is_mandatory": true,
       "input_type": "singleSelection",
@@ -65,7 +83,7 @@
     },
     {
       "param_name": "client_secret",
-      "param_friendly_name": "Client cSecret",
+      "param_friendly_name": "Client Secret",
       "param_type": "String",
       "is_cleartext": true,
       "param_description": "Client Secret for authenticating with Azure Key Vault",
@@ -76,7 +94,7 @@
   ],
   "actions": [
     {
-      "action_id": "TestConnection",
+      "action_id": "test_connection",
       "description": "Test connection to Azure Key Vault, will confirm if connection settings are working as expected",
       "is_sync": true,
       "friendly_name": "Test Connection",
@@ -84,20 +102,11 @@
       ]
     },
     {
-      "action_id": "FetchCredentials",
+      "action_id": "fetch_credentials",
       "description": "Fetch secret fom Azure Key Vault, this can only be run from the credentials page",
       "is_sync": true,
       "friendly_name": "Fetch secret from Azure Key Vault",
       "action_params": [
-        {
-          "param_name": "credentialProviderCustomQuery",
-          "param_type": "String",
-          "is_cleartext": true,
-          "param_description": "Custom Query",
-          "default_value": "{"secret_key":"mysecret"}",
-          "param_priority": "primary",
-          "is_mandatory": false
-        },
         {
           "param_name": "azureKeyVaultURL",
           "param_type": "String",
@@ -109,71 +118,5 @@
         }
       ]
     }
-  ],
-  "permissions": [
-    {
-      "action": "data-owner",
-      "label": "Data Owner",
-      "description": "This is an admin permission description"
-    }
-  ],
-  "custom_roles": [
-    {
-      "name": "test",
-      "permissions": [
-        "permission.tasks.edit"
-      ]
-    }
-  ],
-  "integrations": {
-    "catalog": {
-      "filters": [
-        {
-          "name": "Retention Policies",
-          "tag_name": "retention.policy"
-        },
-        {
-          "name": "Jurisdiction",
-          "tag_name": "jurisdiction"
-        }
-      ],
-      "columns": [
-        {
-          "name": "Retention",
-          "tag_name": "retention.policy",
-          "icon_name": "retention.policy"
-        }
-      ],
-      "object_details": {
-        "tab": {
-          "title": "Retention",
-          "deepLinkPath": "/api/v1/finding-object/",
-          "widgets": [
-            {
-              "widgetId": "GRID",
-              "metadata": [
-                {
-                  "key": "policyHits.policyName",
-                  "label": "Policy"
-                },
-                {
-                  "key": "policyHits.policyType",
-                  "label": "Policy Type"
-                }
-              ]
-            },
-            {
-              "widgetId": "DATE",
-              "metadata": [
-                {
-                  "key": "sentToRemediation",
-                  "label": "Sent To Remediation"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
+  ]
 }

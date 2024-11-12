@@ -9,6 +9,7 @@ import com.bigid.appinfrastructure.dto.StatusEnum;
 import com.bigid.appinfrastructure.externalconnections.BigIDProxy;
 import com.bigid.appinfrastructure.services.AbstractExecutionService;
 import com.bigid.azurekeyvaultapp.constant.ActionParams;
+import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
 import com.bigid.azurekeyvaultapp.service.KeyVaultTokenService;
 import com.bigid.azurekeyvaultapp.util.ParamsMapUtils;
@@ -16,7 +17,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -42,7 +42,7 @@ public class FetchCredentialsExecutionService extends AbstractExecutionService i
     }
 
     @Override
-    public Triple<Boolean, String, Map<String, String>> performAction(ExecutionContext executionContext) {
+    public ActionResponseDto performAction(ExecutionContext executionContext) {
         try {
             AccessToken accessToken = keyVaultTokenService.fetchAccessToken(executionContext);
             TokenCredential tokenCredential = request -> Mono.just(accessToken);
@@ -64,7 +64,7 @@ public class FetchCredentialsExecutionService extends AbstractExecutionService i
             );
             log.info(SUCCESSFULLY_FETCHED_SECRET);
 
-            return Triple.of(true, SUCCESSFULLY_FETCHED_SECRET, Map.of(secretKey, secretValue));
+            return new ActionResponseDto(true, SUCCESSFULLY_FETCHED_SECRET, Map.of(secretKey, secretValue));
 
         } catch (RuntimeException | JsonProcessingException e) {
             bigIDProxy.updateActionStatusToBigID(
@@ -72,13 +72,13 @@ public class FetchCredentialsExecutionService extends AbstractExecutionService i
                     initializeResponse(executionContext, StatusEnum.ERROR, 0d, FAILED_TO_FETCH_SECRET)
             );
             log.error("Failed to fetch secret: {}", e.getMessage(), e);
-            return Triple.of(false, FAILED_TO_FETCH_SECRET, null);
+            return new ActionResponseDto(false, FAILED_TO_FETCH_SECRET, null);
         }
     }
 
     @Override
     public String getActionName() {
-        return "FetchCredentials";
+        return "fetch_credentials";
     }
 
 }

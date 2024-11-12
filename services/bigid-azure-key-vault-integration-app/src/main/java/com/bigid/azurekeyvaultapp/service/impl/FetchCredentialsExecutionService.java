@@ -32,11 +32,13 @@ public class FetchCredentialsExecutionService extends AbstractExecutionService i
     public static final String FAILED_TO_FETCH_SECRET = "Failed to fetch secret";
 
     private final KeyVaultTokenService keyVaultTokenService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public FetchCredentialsExecutionService(BigIDProxy bigIDProxy, KeyVaultTokenService keyVaultTokenService) {
+    public FetchCredentialsExecutionService(BigIDProxy bigIDProxy, KeyVaultTokenService keyVaultTokenService, ObjectMapper objectMapper) {
         super(bigIDProxy);
         this.keyVaultTokenService = keyVaultTokenService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -52,7 +54,6 @@ public class FetchCredentialsExecutionService extends AbstractExecutionService i
                     .buildClient();
 
             // Fetch the secret from Azure Key Vault
-            ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue()).toString());
             String secretKey = rootNode.get(SECRET_KEY).asText();
 

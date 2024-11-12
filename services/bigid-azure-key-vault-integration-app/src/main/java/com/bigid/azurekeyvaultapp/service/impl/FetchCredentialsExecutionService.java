@@ -5,9 +5,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.bigid.appinfrastructure.dto.ExecutionContext;
-import com.bigid.appinfrastructure.dto.StatusEnum;
-import com.bigid.appinfrastructure.externalconnections.BigIDProxy;
-import com.bigid.appinfrastructure.services.AbstractExecutionService;
 import com.bigid.azurekeyvaultapp.constant.ActionParams;
 import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
@@ -25,21 +22,16 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class FetchCredentialsExecutionService extends AbstractExecutionService implements ExecutionService {
+public class FetchCredentialsExecutionService implements ExecutionService {
 
     private static final String SECRET_KEY = "secret_key";
     private static final String SUCCESSFULLY_FETCHED_SECRET = "Successfully fetched secret";
     public static final String FAILED_TO_FETCH_SECRET = "Failed to fetch secret";
 
-    private final KeyVaultTokenService keyVaultTokenService;
-    private final ObjectMapper objectMapper;
-
     @Autowired
-    public FetchCredentialsExecutionService(BigIDProxy bigIDProxy, KeyVaultTokenService keyVaultTokenService, ObjectMapper objectMapper) {
-        super(bigIDProxy);
-        this.keyVaultTokenService = keyVaultTokenService;
-        this.objectMapper = objectMapper;
-    }
+    private KeyVaultTokenService keyVaultTokenService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public ActionResponseDto performAction(ExecutionContext executionContext) {
@@ -58,19 +50,11 @@ public class FetchCredentialsExecutionService extends AbstractExecutionService i
             String secretKey = rootNode.get(SECRET_KEY).asText();
 
             String secretValue = secretClient.getSecret(secretKey).getValue();
-            bigIDProxy.updateActionStatusToBigID(
-                    executionContext,
-                    initializeResponse(executionContext, StatusEnum.COMPLETED, 1d, SUCCESSFULLY_FETCHED_SECRET)
-            );
             log.info(SUCCESSFULLY_FETCHED_SECRET);
 
             return new ActionResponseDto(true, SUCCESSFULLY_FETCHED_SECRET, Map.of(secretKey, secretValue));
 
         } catch (RuntimeException | JsonProcessingException e) {
-            bigIDProxy.updateActionStatusToBigID(
-                    executionContext,
-                    initializeResponse(executionContext, StatusEnum.ERROR, 0d, FAILED_TO_FETCH_SECRET)
-            );
             log.error("Failed to fetch secret: {}", e.getMessage(), e);
             return new ActionResponseDto(false, FAILED_TO_FETCH_SECRET, null);
         }

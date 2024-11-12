@@ -7,7 +7,6 @@ import com.bigid.appinfrastructure.dto.StatusEnum;
 import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.dto.ActionResponseWithAdditionalDetails;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
-import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

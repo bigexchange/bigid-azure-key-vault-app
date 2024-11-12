@@ -17,8 +17,8 @@ import java.util.Map;
 @Slf4j
 public class TestConnectionExecutionService extends AbstractExecutionService implements ExecutionService {
 
-    public static final String CONNECTION_SUCCESSFUL = "Connection to Azure Key Vault successful!";
-    public static final String CONNECTION_FAILED = "Connection to Azure Key Vault Failed!";
+    private static final String CONNECTION_SUCCESSFUL = "Connection to Azure Key Vault successful!";
+    private static final String CONNECTION_FAILED = "Connection to Azure Key Vault Failed!";
 
     private final KeyVaultTokenService keyVaultTokenService;
 
@@ -39,7 +39,7 @@ public class TestConnectionExecutionService extends AbstractExecutionService imp
                     initializeResponse(executionContext, StatusEnum.COMPLETED, 1d, CONNECTION_SUCCESSFUL)
             );
             log.info(CONNECTION_SUCCESSFUL);
-            return Triple.of(true, "Connection to hashicorp vault successful!", null);
+            return Triple.of(true, CONNECTION_SUCCESSFUL, null);
 
         } catch (RuntimeException e) {
             bigIDProxy.updateActionStatusToBigID(

@@ -1,6 +1,6 @@
 apiVersion: v2
-name: your app
-description: A Helm chart for your app k8s deployment
+name: Bigid-Azure-Key-Vault-App
+description: A Helm chart for Bigid-Azure-Key-Vault-App k8s deployment
 
 # A chart can be either an 'application' or a 'library' chart.
 #

@@ -26,7 +26,7 @@ public class FetchCredentialsExecutionService implements ExecutionService {
 
     private static final String SECRET_KEY = "secret_key";
     private static final String SUCCESSFULLY_FETCHED_SECRET = "Successfully fetched secret";
-    public static final String FAILED_TO_FETCH_SECRET = "Failed to fetch secret";
+    public static final String FAILED_TO_FETCH_SECRET = "Failed to fetch secret: %s";
 
     @Autowired
     private KeyVaultTokenService keyVaultTokenService;
@@ -40,13 +40,18 @@ public class FetchCredentialsExecutionService implements ExecutionService {
             TokenCredential tokenCredential = request -> Mono.just(accessToken);
 
             Map<String, Object> actionParamsMap = ParamsMapUtils.getActionParamsMap(executionContext);
-            SecretClient secretClient = new SecretClientBuilder()
-                    .vaultUrl(actionParamsMap.get(ActionParams.AZURE_KEY_VAULT_URL.getValue()).toString())
-                    .credential(tokenCredential)
-                    .buildClient();
+            SecretClient secretClient = getSecretClient(actionParamsMap, tokenCredential);
 
             // Fetch the secret from Azure Key Vault
-            JsonNode rootNode = objectMapper.readTree(actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue()).toString());
+            JsonNode rootNode;
+            try {
+                rootNode = objectMapper.readTree(actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue()).toString());
+            } catch (JsonProcessingException e) {
+                throw new IllegalArgumentException("custom query contains invalid JSON");
+            }
+            if (!rootNode.has(SECRET_KEY)) {
+                throw new IllegalArgumentException("secret_key field is missing in custom query");
+            }
             String secretKey = rootNode.get(SECRET_KEY).asText();
 
             String secretValue = secretClient.getSecret(secretKey).getValue();
@@ -54,15 +59,22 @@ public class FetchCredentialsExecutionService implements ExecutionService {
 
             return new ActionResponseDto(true, SUCCESSFULLY_FETCHED_SECRET, Map.of(secretKey, secretValue));
 
-        } catch (RuntimeException | JsonProcessingException e) {
+        } catch (RuntimeException e) {
             log.error("Failed to fetch secret: {}", e.getMessage(), e);
-            return new ActionResponseDto(false, FAILED_TO_FETCH_SECRET, null);
+            return new ActionResponseDto(false, String.format(FAILED_TO_FETCH_SECRET, e.getMessage()), null);
         }
     }
 
     @Override
     public String getActionName() {
         return "fetch_credentials";
+    }
+
+    public SecretClient getSecretClient(Map<String, Object> actionParamsMap, TokenCredential tokenCredential) {
+        return new SecretClientBuilder()
+                .vaultUrl(actionParamsMap.get(ActionParams.AZURE_KEY_VAULT_URL.getValue()).toString())
+                .credential(tokenCredential)
+                .buildClient();
     }
 
 }

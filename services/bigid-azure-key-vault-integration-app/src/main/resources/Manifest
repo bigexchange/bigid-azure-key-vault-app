@@ -40,7 +40,7 @@
       "param_description": "Client ID for authenticating with Azure Key Vault",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true
     },
     {
       "param_name": "tenant_id",
@@ -50,7 +50,7 @@
       "param_description": "Tenant ID for authenticating with Azure Key Vault",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true
     },
     {
       "param_name": "client_secret",
@@ -60,7 +60,17 @@
       "param_description": "Client Secret for authenticating with Azure Key Vault",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true
+    },
+    {
+      "param_name": "azure_key_vault_url",
+      "param_friendly_name": "Azure Key Vault URL",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Azure Key Vault URL",
+      "default_value": "",
+      "param_priority": "primary",
+      "is_mandatory": true
     }
   ],
   "actions": [
@@ -78,15 +88,6 @@
       "is_sync": true,
       "friendly_name": "Fetch secret from Azure Key Vault",
       "action_params": [
-        {
-          "param_name": "azureKeyVaultURL",
-          "param_type": "String",
-          "is_cleartext": true,
-          "param_description": "Specify Azure Key Vault Url",
-          "default_value": "",
-          "param_priority": "primary",
-          "is_mandatory": false
-        }
       ]
     }
   ]

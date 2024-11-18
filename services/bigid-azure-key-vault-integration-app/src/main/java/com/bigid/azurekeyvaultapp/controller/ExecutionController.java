@@ -5,11 +5,9 @@ import com.bigid.appinfrastructure.dto.ActionResponseDetails;
 import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.StatusEnum;
 import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
-import com.bigid.azurekeyvaultapp.dto.ActionResponseWithAdditionalDetails;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,10 +40,10 @@ public class ExecutionController extends AbstractExecutionController {
                 : generateFailedResponse(executionId, new Exception(actionResponseDto.message()));
     }
 
-    private ResponseEntity<ActionResponseDetails> generateSuccessResponse(String executionId, String message, Map<String, String> secretMap) {
-        return secretMap.isEmpty()
-                ? generateSyncSuccessMessage(executionId, message)
-                : ResponseEntity.status(HttpStatus.OK).body(new ActionResponseWithAdditionalDetails(executionId, StatusEnum.COMPLETED, 1d, message, secretMap));
+    private ResponseEntity<ActionResponseDetails> generateSuccessResponse(String executionId, String message, Map<String, Map<String, String>> secretMap) {
+        ResponseEntity<ActionResponseDetails> actionResponseDetailsResponseEntity = generateSyncSuccessMessage(executionId, message);
+        Objects.requireNonNull(actionResponseDetailsResponseEntity.getBody()).setAdditionalData(secretMap);
+        return actionResponseDetailsResponseEntity;
     }
 
     private ResponseEntity<ActionResponseDetails> unresolvedActionResponse(String action, String executionId) {

@@ -6,11 +6,13 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.azurekeyvaultapp.constant.ActionParams;
+import com.bigid.azurekeyvaultapp.constant.GlobalParams;
 import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
 import com.bigid.azurekeyvaultapp.service.KeyVaultTokenService;
 import com.bigid.azurekeyvaultapp.util.ParamsMapUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ public class FetchCredentialsExecutionService implements ExecutionService {
     private static final String SECRET_KEY = "secret_key";
     private static final String SUCCESSFULLY_FETCHED_SECRET = "Successfully fetched secret";
     public static final String FAILED_TO_FETCH_SECRET = "Failed to fetch secret: %s";
+    public static final String CREDENTIAL_FIELDS = "credentialFields";
 
     @Autowired
     private KeyVaultTokenService keyVaultTokenService;
@@ -39,8 +42,10 @@ public class FetchCredentialsExecutionService implements ExecutionService {
             AccessToken accessToken = keyVaultTokenService.fetchAccessToken(executionContext);
             TokenCredential tokenCredential = request -> Mono.just(accessToken);
 
+            Map<String, String> globalParamsMap = ParamsMapUtils.getGlobalParamsMap(executionContext);
             Map<String, Object> actionParamsMap = ParamsMapUtils.getActionParamsMap(executionContext);
-            SecretClient secretClient = getSecretClient(actionParamsMap, tokenCredential);
+
+            SecretClient secretClient = getSecretClient(globalParamsMap, tokenCredential);
 
             // Fetch the secret from Azure Key Vault
             JsonNode rootNode;
@@ -56,8 +61,16 @@ public class FetchCredentialsExecutionService implements ExecutionService {
 
             String secretValue = secretClient.getSecret(secretKey).getValue();
             log.info(SUCCESSFULLY_FETCHED_SECRET);
+            Map<String, String> secretsMap;
+            try {
+                secretsMap = objectMapper.readValue(secretValue, new TypeReference<>() {
+                });
+            } catch (JsonProcessingException e) {
+                throw new IllegalArgumentException("Secret contains invalid JSON");
+            }
+            Map<String, Map<String, String>> secrets = Map.of(CREDENTIAL_FIELDS, secretsMap);
 
-            return new ActionResponseDto(true, SUCCESSFULLY_FETCHED_SECRET, Map.of(secretKey, secretValue));
+            return new ActionResponseDto(true, SUCCESSFULLY_FETCHED_SECRET, secrets);
 
         } catch (RuntimeException e) {
             log.error("Failed to fetch secret: {}", e.getMessage(), e);
@@ -70,9 +83,9 @@ public class FetchCredentialsExecutionService implements ExecutionService {
         return "fetch_credentials";
     }
 
-    public SecretClient getSecretClient(Map<String, Object> actionParamsMap, TokenCredential tokenCredential) {
+    public SecretClient getSecretClient(Map<String, String> globalParamsMap, TokenCredential tokenCredential) {
         return new SecretClientBuilder()
-                .vaultUrl(actionParamsMap.get(ActionParams.AZURE_KEY_VAULT_URL.getValue()).toString())
+                .vaultUrl(globalParamsMap.get(GlobalParams.AZURE_KEY_VAULT_URL.getValue()))
                 .credential(tokenCredential)
                 .buildClient();
     }

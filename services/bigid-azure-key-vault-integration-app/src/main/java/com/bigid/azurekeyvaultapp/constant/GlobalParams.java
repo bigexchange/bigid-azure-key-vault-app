@@ -9,7 +9,8 @@ public enum GlobalParams {
     TENANT_ID("tenant_id"),
     AUTHENTICATION_METHOD("authentication_method"),
     CLIENT_CREDENTIALS("Client Credentials"),
-    SCOPE("scope");
+    SCOPE("scope"),
+    AZURE_KEY_VAULT_URL("azure_key_vault_url");
 
     private final String value;
 

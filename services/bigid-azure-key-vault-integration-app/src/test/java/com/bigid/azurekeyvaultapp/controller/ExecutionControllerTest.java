@@ -97,29 +97,30 @@ class ExecutionControllerTest extends ConfigIT {
         doReturn(secretClient)
                 .when(fetchCredentialsExecutionService)
                 .getSecretClient(any(), any());
+        //Map<String, String> secrets = Map.of("principalId", secretKey, "tenantId", "sds", "principal_secret_enc", secretValue);
 
-        addSecret("my-secret", "secretValue");
+        addSecret("my-secret", "{\"principalId\": \"secretKey\", \"tenantId\": \"tenantIdValue\", \"principal_secret_enc\": \"secretValue\"}");
 
         ExecutionContext executionContext = new ExecutionContext();
         executionContext.setActionName("fetch_credentials");
         executionContext.setExecutionId("exec-123");
         executionContext.setActionParams(List.of(
-                createActionParam(ActionParams.AZURE_KEY_VAULT_URL.getValue(), getVaultBaseUrl()),
                 createActionParam(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue(), "{\"secret_key\":\"my-secret\"}")
         ));
         executionContext.setGlobalParams(List.of(
-                createGlobalParam(GlobalParams.AUTHENTICATION_METHOD.getValue(), GlobalParams.CLIENT_CREDENTIALS.getValue())
+                createGlobalParam(GlobalParams.AUTHENTICATION_METHOD.getValue(), GlobalParams.CLIENT_CREDENTIALS.getValue()),
+                createGlobalParam(GlobalParams.AZURE_KEY_VAULT_URL.getValue(), getVaultBaseUrl())
         ));
 
         // Act & Assert
         mockMvc.perform(post("/execute")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(executionContext)))
-                .andExpect(status().isOk())//.andDo(print());
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.executionId").value("exec-123"))
                 .andExpect(jsonPath("$.statusEnum").value("COMPLETED"))
                 .andExpect(jsonPath("$.message").value("Successfully fetched secret"))
-                .andExpect(jsonPath("$.credentialFields.my-secret").value("secretValue"));
+                .andExpect(jsonPath("$.additionalData.credentialFields.principal_secret_enc").value("secretValue"));
     }
 
     @Test
@@ -149,11 +150,11 @@ class ExecutionControllerTest extends ConfigIT {
         executionContext.setActionName("fetch_credentials");
         executionContext.setExecutionId("exec-123");
         executionContext.setActionParams(List.of(
-                createActionParam(ActionParams.AZURE_KEY_VAULT_URL.getValue(), getVaultBaseUrl()),
                 createActionParam(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue(), "{}") // No secret_key field
         ));
         executionContext.setGlobalParams(List.of(
-                createGlobalParam(GlobalParams.AUTHENTICATION_METHOD.getValue(), GlobalParams.CLIENT_CREDENTIALS.getValue())
+                createGlobalParam(GlobalParams.AUTHENTICATION_METHOD.getValue(), GlobalParams.CLIENT_CREDENTIALS.getValue()),
+                createGlobalParam(GlobalParams.AZURE_KEY_VAULT_URL.getValue(), getVaultBaseUrl())
         ));
 
         // Act & Assert
@@ -173,11 +174,11 @@ class ExecutionControllerTest extends ConfigIT {
         executionContext.setActionName("fetch_credentials");
         executionContext.setExecutionId("exec-123");
         executionContext.setActionParams(List.of(
-                createActionParam(ActionParams.AZURE_KEY_VAULT_URL.getValue(), getVaultBaseUrl()),
                 createActionParam(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue(), "invalid-json") // Invalid JSON
         ));
         executionContext.setGlobalParams(List.of(
-                createGlobalParam(GlobalParams.AUTHENTICATION_METHOD.getValue(), GlobalParams.CLIENT_CREDENTIALS.getValue())
+                createGlobalParam(GlobalParams.AUTHENTICATION_METHOD.getValue(), GlobalParams.CLIENT_CREDENTIALS.getValue()),
+                createGlobalParam(GlobalParams.AZURE_KEY_VAULT_URL.getValue(), getVaultBaseUrl())
         ));
 
         // Act & Assert

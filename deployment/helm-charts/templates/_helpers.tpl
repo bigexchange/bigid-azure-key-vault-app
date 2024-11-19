@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "basic-demo.name" -}}
+{{- define "azure-key-vault.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "basic-demo.fullname" -}}
+{{- define "azure-key-vault.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "basic-demo.chart" -}}
+{{- define "azure-key-vault.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "basic-demo.labels" -}}
-helm.sh/chart: {{ include "basic-demo.chart" . }}
-{{ include "basic-demo.selectorLabels" . }}
+{{- define "azure-key-vault.labels" -}}
+helm.sh/chart: {{ include "azure-key-vault.chart" . }}
+{{ include "azure-key-vault.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,18 +45,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "basic-demo.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "basic-demo.name" . }}
+{{- define "azure-key-vault.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "azure-key-vault.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: bigid-basic-demo
+app: bigid-azure-key-vault
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "basic-demo.serviceAccountName" -}}
+{{- define "azure-key-vault.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "basic-demo.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "azure-key-vault.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "basic-demo.fullname" . }}
+  name: {{ include "azure-key-vault.fullname" . }}
   labels:
-    {{- include "basic-demo.labels" . | nindent 4 }}
+    {{- include "azure-key-vault.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "basic-demo.selectorLabels" . | nindent 6 }}
+      {{- include "azure-key-vault.selectorLabels" . | nindent 6 }}
   {{- if .Values.updateStrategy }}
   strategy: {{- toYaml .Values.updateStrategy | nindent 4 }}
   {{- end }}
@@ -22,13 +22,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "basic-demo.selectorLabels" . | nindent 8 }}
+        {{- include "azure-key-vault.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "basic-demo.serviceAccountName" . }}
+      serviceAccountName: {{ include "azure-key-vault.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

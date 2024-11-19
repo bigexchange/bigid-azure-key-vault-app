@@ -70,7 +70,7 @@
       "param_description": "Azure Key Vault URL",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": true
+      "is_mandatory": false
     }
   ],
   "actions": [

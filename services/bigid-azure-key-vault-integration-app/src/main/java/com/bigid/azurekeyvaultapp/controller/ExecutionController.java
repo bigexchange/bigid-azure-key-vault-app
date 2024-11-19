@@ -1,6 +1,5 @@
 package com.bigid.azurekeyvaultapp.controller;
 
-import com.bigid.appinfrastructure.controllers.AbstractExecutionController;
 import com.bigid.appinfrastructure.dto.ActionResponseDetails;
 import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.StatusEnum;
@@ -8,50 +7,45 @@ import com.bigid.azurekeyvaultapp.dto.ActionResponseDto;
 import com.bigid.azurekeyvaultapp.service.ExecutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 import java.util.Objects;
 
 
 @Controller
-public class ExecutionController extends AbstractExecutionController {
+public class ExecutionController {
 
     @Autowired
     @Qualifier("executionServices")
     private Map<String, ExecutionService> executionServices;
 
-    @Override
-    public ResponseEntity<ActionResponseDetails> executeAction(@RequestBody ExecutionContext executionContext) {
+    @PostMapping({"/execute"})
+    @ResponseBody
+    public ResponseEntity<ActionResponseDetails> executeAction(@RequestBody ExecutionContext executionContext, WebRequest webRequest) {
         String action = executionContext.getActionName();
         String executionId = executionContext.getExecutionId();
+        webRequest.setAttribute("executionId", executionId, RequestAttributes.SCOPE_REQUEST);
         ExecutionService executionService = executionServices.get(action);
 
         if (Objects.isNull(executionService)) {
-            return unresolvedActionResponse(action, executionId);
+            throw new IllegalArgumentException("Got unresolved action = " + action);
         }
 
         ActionResponseDto actionResponseDto = executionService.performAction(executionContext);
 
-        return actionResponseDto.success()
-                ? generateSuccessResponse(executionId, actionResponseDto.message(), actionResponseDto.credentialFields())
-                : generateFailedResponse(executionId, new Exception(actionResponseDto.message()));
+        return generateSuccessResponse(executionId, actionResponseDto.message(), actionResponseDto.credentialFields());
     }
 
     private ResponseEntity<ActionResponseDetails> generateSuccessResponse(String executionId, String message, Map<String, Map<String, String>> secretMap) {
-        ResponseEntity<ActionResponseDetails> actionResponseDetailsResponseEntity = generateSyncSuccessMessage(executionId, message);
-        Objects.requireNonNull(actionResponseDetailsResponseEntity.getBody()).setAdditionalData(secretMap);
-        return actionResponseDetailsResponseEntity;
-    }
-
-    private ResponseEntity<ActionResponseDetails> unresolvedActionResponse(String action, String executionId) {
-        return ResponseEntity.badRequest().body(
-                new ActionResponseDetails(executionId,
-                        StatusEnum.ERROR,
-                        0d,
-                        "Got unresolved action = " + action));
+        return ResponseEntity.status(HttpStatus.OK).body(new ActionResponseDetails(executionId, StatusEnum.COMPLETED, 1.0, message, secretMap, null));
     }
 
 }

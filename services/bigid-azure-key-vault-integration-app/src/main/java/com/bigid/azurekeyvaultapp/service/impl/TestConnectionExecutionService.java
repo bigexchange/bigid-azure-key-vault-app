@@ -22,17 +22,11 @@ public class TestConnectionExecutionService implements ExecutionService {
 
     @Override
     public ActionResponseDto performAction(ExecutionContext executionContext) {
-        try {
-            log.info("Attempting to fetch an access token...");
-            keyVaultTokenService.fetchAccessToken(executionContext);
-            log.info(CONNECTION_SUCCESSFUL);
+        log.info("Attempting to fetch an access token...");
+        keyVaultTokenService.fetchAccessToken(executionContext);
+        log.info(CONNECTION_SUCCESSFUL);
 
-            return new ActionResponseDto(true, CONNECTION_SUCCESSFUL, new HashMap<>());
-
-        } catch (RuntimeException e) {
-            log.error(CONNECTION_FAILED + ": " + e.getMessage(), e);
-            return new ActionResponseDto(false, String.format(CONNECTION_FAILED, e.getMessage()), new HashMap<>());
-        }
+        return new ActionResponseDto(CONNECTION_SUCCESSFUL, new HashMap<>());
     }
 
     @Override

@@ -1,23 +1,43 @@
-# Basic Demo Application Template (Java)
+# Azure Key Vault Integration
 
-This template repository maintains a BigID basic demo application (backend only).
-The application can be taken and used as a reference for building your own custom application.
+## Description
+This application integrates with Azure Key Vault to securely manage and consume secrets within BigID data sources and configurations.
 
-## Prerequisites
+## Documentation
 
-- In order to build and run the application, you will need Docker.
+[TPA Framework](https://bigidio.atlassian.net/wiki/spaces/CON/pages/2121433138/TPA+Framework)
 
-## Setting git hooks
+## Installation
 
-- In order to set our custom git hooks in order to validate app before commit - [click here](hooks/README.md)
+```bash
+$ npm install
+```
 
-## Running the application
-* In order to create the docker image, you should run the following command when you are in the root directory of the repository:
+## Running the app
 
-``docker build -t bigexchange/basic-demo-application:latest .`` 
+```bash
+# development
+$ npm run start
 
-* Once the image is created, you should run the image with the command:
+# watch mode
+$ npm run start:dev
 
-``docker run -itd -p 8083:8083 bigexchange/basic-demo-app:latest``
+# production mode
+$ npm run start:prod
+```
 
-The container should be then up and running, and can be connected in BigID's environment with the application framework.
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+
+# test coverage difference
+$ npm run test:covdiff
+```

@@ -1,1 +1,1 @@
-The basic-demo application has been installed sucessfully!
+The azure-key-vault application has been installed sucessfully!

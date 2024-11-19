@@ -1,4 +1,4 @@
-# Default values for myApp.
+# Default values for Azure Key Vault.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -17,14 +17,14 @@ replicaCount: 1
 
 image:
   registry: 835626702473.dkr.ecr.us-east-1.amazonaws.com
-  repository: bigexchange/bigid-azure-key-vault-app
+  repository: bigexchange/bigid-azure-key-vault
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "1.1.0-2022-05-09"
 
 imagePullSecrets: []
-nameOverride: "your app"
-fullnameOverride: "your app"
+nameOverride: "bigid-azure-key-vault"
+fullnameOverride: "bigid-azure-key-vault"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -33,10 +33,10 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "basic-demo"
+  name: ""
 
 podAnnotations:
-  ad.datadoghq.com/bigid-azure-key-vault-app.logs: '[{"source": "java", "service": "basic-demo"}]'
+  ad.datadoghq.com/bigid-azure-key-vault-app.logs: '[{"source": "java", "service": "bigid-azure-key-vault"}]'
 
 ## Update strategy - only really applicable for deployments with RWO PVs attached
 ## If replicas = 1, an update can get "stuck", as the previous pod remains attached to the

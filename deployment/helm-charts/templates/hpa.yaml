@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "basic-demo.fullname" . }}
+  name: {{ include "azure-key-vault.fullname" . }}
   labels:
-    {{- include "basic-demo.labels" . | nindent 4 }}
+    {{- include "azure-key-vault.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "basic-demo.fullname" . }}
+    name: {{ include "azure-key-vault.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

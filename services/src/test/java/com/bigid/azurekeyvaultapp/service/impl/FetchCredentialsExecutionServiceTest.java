@@ -24,14 +24,11 @@ import java.util.List;
 
 import static com.bigid.azurekeyvaultapp.service.impl.FetchCredentialsExecutionService.CREDENTIAL_FIELDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -78,18 +75,17 @@ class FetchCredentialsExecutionServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertTrue(response.success());
         assertEquals("Successfully fetched secret", response.message());
         assertNotNull(response.credentialFields());
         assertEquals("secretValue", response.credentialFields().get(CREDENTIAL_FIELDS).get("principal_secret_enc"));
 
         // Verify interactions
-        verify(keyVaultTokenService, times(1)).fetchAccessToken(any(ExecutionContext.class));
-        verify(mockSecretClient, times(1)).getSecret("my-secret");
+        verify(keyVaultTokenService).fetchAccessToken(any(ExecutionContext.class));
+        verify(mockSecretClient).getSecret("my-secret");
     }
 
     @Test
-    void performAction_WhenSecretJsonProcessingExceptionOccurs_ShouldReturnFailureResponse() {
+    void performAction_WhenSecretJsonProcessingExceptionOccurs_ShouldThrowException() {
         // Arrange: Create real ExecutionContext
         ExecutionContext executionContext = createExecutionContext(
                 List.of(
@@ -114,21 +110,15 @@ class FetchCredentialsExecutionServiceTest {
         doReturn(mockSecretClient).when(fetchCredentialsExecutionService).getSecretClient(any(), any(TokenCredential.class));
 
         // Act
-        ActionResponseDto response = fetchCredentialsExecutionService.performAction(executionContext);
-
-        // Assert
-        assertNotNull(response);
-        assertFalse(response.success());
-        assertEquals("Failed to fetch secret: Secret contains invalid JSON", response.message());
-        assertNull(response.credentialFields());
+        assertThrows(IllegalArgumentException.class, () -> fetchCredentialsExecutionService.performAction(executionContext), "Secret contains invalid JSON");
 
         // Verify interactions
-        verify(keyVaultTokenService, times(1)).fetchAccessToken(any(ExecutionContext.class));
-        verify(mockSecretClient, times(1)).getSecret("my-secret");
+        verify(keyVaultTokenService).fetchAccessToken(any(ExecutionContext.class));
+        verify(mockSecretClient).getSecret("my-secret");
     }
 
     @Test
-    void performAction_WhenJsonProcessingExceptionOccurs_ShouldReturnFailureResponse() {
+    void performAction_WhenJsonProcessingExceptionOccurs_ShouldThrowException() {
         // Arrange
         ExecutionContext executionContext = createExecutionContext(
                 List.of(
@@ -143,17 +133,11 @@ class FetchCredentialsExecutionServiceTest {
         when(keyVaultTokenService.fetchAccessToken(executionContext)).thenReturn(mockAccessToken);
 
         // Act
-        ActionResponseDto response = fetchCredentialsExecutionService.performAction(executionContext);
-
-        // Assert
-        assertNotNull(response);
-        assertFalse(response.success());
-        assertEquals("Failed to fetch secret: custom query contains invalid JSON", response.message());
-        assertNull(response.credentialFields());
+        assertThrows(IllegalArgumentException.class, () -> fetchCredentialsExecutionService.performAction(executionContext), "custom query contains invalid JSON");
     }
 
     @Test
-    void performAction_WhenRuntimeExceptionOccurs_ShouldReturnFailureResponse() {
+    void performAction_WhenRuntimeExceptionOccurs_ShouldThrowException() {
         // Arrange
         ExecutionContext executionContext = createExecutionContext(
                 List.of(
@@ -167,13 +151,7 @@ class FetchCredentialsExecutionServiceTest {
         when(keyVaultTokenService.fetchAccessToken(executionContext)).thenThrow(new RuntimeException("Connection error"));
 
         // Act
-        ActionResponseDto response = fetchCredentialsExecutionService.performAction(executionContext);
-
-        // Assert
-        assertNotNull(response);
-        assertFalse(response.success());
-        assertEquals("Failed to fetch secret: Connection error", response.message());
-        assertNull(response.credentialFields());
+        assertThrows(RuntimeException.class, () -> fetchCredentialsExecutionService.performAction(executionContext), "Connection error");
     }
 
     @Test

@@ -12,11 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,12 +38,11 @@ class TestConnectionExecutionServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertTrue(response.success());
         assertEquals(CONNECTION_SUCCESSFUL, response.message());
         assertEquals(new HashMap<>(), response.credentialFields());
 
         // Verify interactions
-        verify(keyVaultTokenService, times(1)).fetchAccessToken(executionContext);
+        verify(keyVaultTokenService).fetchAccessToken(executionContext);
     }
 
     @Test
@@ -54,16 +51,10 @@ class TestConnectionExecutionServiceTest {
         doThrow(new RuntimeException("Simulated failure")).when(keyVaultTokenService).fetchAccessToken(executionContext);
 
         // Act
-        ActionResponseDto response = testConnectionExecutionService.performAction(executionContext);
-
-        // Assert
-        assertNotNull(response);
-        assertFalse(response.success());
-        assertEquals("Connection to Azure Key Vault Failed: Simulated failure", response.message());
-        assertEquals(new HashMap<>(), response.credentialFields());
+        assertThrows(RuntimeException.class, () -> testConnectionExecutionService.performAction(executionContext), "Simulated failure");
 
         // Verify interactions
-        verify(keyVaultTokenService, times(1)).fetchAccessToken(executionContext);
+        verify(keyVaultTokenService).fetchAccessToken(executionContext);
     }
 
     @Test

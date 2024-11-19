@@ -38,44 +38,38 @@ public class FetchCredentialsExecutionService implements ExecutionService {
 
     @Override
     public ActionResponseDto performAction(ExecutionContext executionContext) {
+        AccessToken accessToken = keyVaultTokenService.fetchAccessToken(executionContext);
+        TokenCredential tokenCredential = request -> Mono.just(accessToken);
+
+        Map<String, String> globalParamsMap = ParamsMapUtils.getGlobalParamsMap(executionContext);
+        Map<String, Object> actionParamsMap = ParamsMapUtils.getActionParamsMap(executionContext);
+
+        SecretClient secretClient = getSecretClient(globalParamsMap, tokenCredential);
+
+        // Fetch the secret from Azure Key Vault
+        JsonNode rootNode;
         try {
-            AccessToken accessToken = keyVaultTokenService.fetchAccessToken(executionContext);
-            TokenCredential tokenCredential = request -> Mono.just(accessToken);
-
-            Map<String, String> globalParamsMap = ParamsMapUtils.getGlobalParamsMap(executionContext);
-            Map<String, Object> actionParamsMap = ParamsMapUtils.getActionParamsMap(executionContext);
-
-            SecretClient secretClient = getSecretClient(globalParamsMap, tokenCredential);
-
-            // Fetch the secret from Azure Key Vault
-            JsonNode rootNode;
-            try {
-                rootNode = objectMapper.readTree(actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue()).toString());
-            } catch (JsonProcessingException e) {
-                throw new IllegalArgumentException("custom query contains invalid JSON");
-            }
-            if (!rootNode.has(SECRET_KEY)) {
-                throw new IllegalArgumentException("secret_key field is missing in custom query");
-            }
-            String secretKey = rootNode.get(SECRET_KEY).asText();
-
-            String secretValue = secretClient.getSecret(secretKey).getValue();
-            log.info(SUCCESSFULLY_FETCHED_SECRET);
-            Map<String, String> secretsMap;
-            try {
-                secretsMap = objectMapper.readValue(secretValue, new TypeReference<>() {
-                });
-            } catch (JsonProcessingException e) {
-                throw new IllegalArgumentException("Secret contains invalid JSON");
-            }
-            Map<String, Map<String, String>> secrets = Map.of(CREDENTIAL_FIELDS, secretsMap);
-
-            return new ActionResponseDto(true, SUCCESSFULLY_FETCHED_SECRET, secrets);
-
-        } catch (RuntimeException e) {
-            log.error("Failed to fetch secret: {}", e.getMessage(), e);
-            return new ActionResponseDto(false, String.format(FAILED_TO_FETCH_SECRET, e.getMessage()), null);
+            rootNode = objectMapper.readTree(actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue()).toString());
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("custom query contains invalid JSON");
         }
+        if (!rootNode.has(SECRET_KEY)) {
+            throw new IllegalArgumentException("secret_key field is missing in custom query");
+        }
+        String secretKey = rootNode.get(SECRET_KEY).asText();
+
+        String secretValue = secretClient.getSecret(secretKey).getValue();
+        log.info(SUCCESSFULLY_FETCHED_SECRET);
+        Map<String, String> secretsMap;
+        try {
+            secretsMap = objectMapper.readValue(secretValue, new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Secret contains invalid JSON");
+        }
+        Map<String, Map<String, String>> secrets = Map.of(CREDENTIAL_FIELDS, secretsMap);
+
+        return new ActionResponseDto(SUCCESSFULLY_FETCHED_SECRET, secrets);
     }
 
     @Override

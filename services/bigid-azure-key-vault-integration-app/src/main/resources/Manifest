@@ -8,43 +8,15 @@
   "vendor": "BigID",
   "global_params": [
     {
-      "param_name": "vault_url",
-      "param_friendly_name": "Vault URL",
-      "param_type": "String",
-      "is_cleartext": true,
-      "param_description": "Azure Key Vault URL to authenticate with the vault",
-      "default_value": "",
-      "hint": "Azure login URL",
-      "param_priority": "primary",
-      "is_mandatory": true
-    },
-    {
       "param_name": "scope",
       "param_friendly_name": "Scope",
       "param_type": "String",
       "is_cleartext": true,
       "param_description": "Scope url in Azure Key Vault",
+      "default_value": "",
       "hint": "https://vault.azure.net/.default",
       "param_priority": "primary",
       "is_mandatory": true
-    },
-    {
-      "param_name": "username",
-      "param_friendly_name": "Username",
-      "param_type": "String",
-      "is_cleartext": true,
-      "param_description": "Azure Key Vault Username to authenticate with the vault",
-      "param_priority": "primary",
-      "is_mandatory": false
-    },
-    {
-      "param_name": "password",
-      "param_friendly_name": "Password",
-      "param_type": "String",
-      "is_cleartext": true,
-      "param_description": "Azure Key Vault Password to authenticate with the vault",
-      "param_priority": "primary",
-      "is_mandatory": false
     },
     {
       "param_name": "authentication_method",
@@ -57,7 +29,6 @@
       "is_mandatory": true,
       "input_type": "singleSelection",
       "input_items": [
-        "Basic Authentication",
         "Client Credentials"
       ]
     },
@@ -69,27 +40,37 @@
       "param_description": "Client ID for authenticating with Azure Key Vault",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true
     },
     {
       "param_name": "tenant_id",
       "param_friendly_name": "Tenant ID",
       "param_type": "String",
-      "is_cleartext": true,
+      "is_cleartext": false,
       "param_description": "Tenant ID for authenticating with Azure Key Vault",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false,
+      "is_mandatory": true
     },
     {
       "param_name": "client_secret",
       "param_friendly_name": "Client Secret",
       "param_type": "String",
-      "is_cleartext": true,
+      "is_cleartext": false,
       "param_description": "Client Secret for authenticating with Azure Key Vault",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true
+    },
+    {
+      "param_name": "azure_key_vault_url",
+      "param_friendly_name": "Azure Key Vault URL",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Azure Key Vault URL",
+      "default_value": "",
+      "param_priority": "primary",
+      "is_mandatory": true
     }
   ],
   "actions": [
@@ -107,15 +88,6 @@
       "is_sync": true,
       "friendly_name": "Fetch secret from Azure Key Vault",
       "action_params": [
-        {
-          "param_name": "azureKeyVaultURL",
-          "param_type": "String",
-          "is_cleartext": true,
-          "param_description": "Specify Azure Key Vault Url",
-          "default_value": "",
-          "param_priority": "primary",
-          "is_mandatory": false
-        }
       ]
     }
   ]

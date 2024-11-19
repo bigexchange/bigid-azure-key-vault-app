@@ -8,12 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 @Slf4j
 public class TestConnectionExecutionService implements ExecutionService {
 
     private static final String CONNECTION_SUCCESSFUL = "Connection to Azure Key Vault successful!";
-    private static final String CONNECTION_FAILED = "Connection to Azure Key Vault Failed!";
+    private static final String CONNECTION_FAILED = "Connection to Azure Key Vault Failed: %s";
 
     @Autowired
     private KeyVaultTokenService keyVaultTokenService;
@@ -25,11 +27,11 @@ public class TestConnectionExecutionService implements ExecutionService {
             keyVaultTokenService.fetchAccessToken(executionContext);
             log.info(CONNECTION_SUCCESSFUL);
 
-            return new ActionResponseDto(true, CONNECTION_SUCCESSFUL, null);
+            return new ActionResponseDto(true, CONNECTION_SUCCESSFUL, new HashMap<>());
 
         } catch (RuntimeException e) {
             log.error(CONNECTION_FAILED + ": " + e.getMessage(), e);
-            return new ActionResponseDto(false, CONNECTION_FAILED, null);
+            return new ActionResponseDto(false, String.format(CONNECTION_FAILED, e.getMessage()), new HashMap<>());
         }
     }
 

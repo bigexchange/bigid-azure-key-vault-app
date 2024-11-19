@@ -24,12 +24,6 @@ public class AzureKeyVaultTokenService implements KeyVaultTokenService {
         }
 
         TokenCredential credential = getTokenCredential(globalParamsMap);
-//                : new ClientCertificateCredentialBuilder() // TODO: implement if needed
-//                .clientId(globalParamsMap.get(GlobalParams.CLIENT_ID.getValue()))
-//                .tenantId(globalParamsMap.get(GlobalParams.TENANT_ID.getValue()))
-//                .pfxCertificate("certPath")
-//                .clientCertificatePassword("certPassword")
-//                .build();
 
         return Objects.requireNonNull(credential
                 .getToken(new TokenRequestContext()

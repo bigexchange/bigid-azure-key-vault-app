@@ -14,7 +14,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @ControllerAdvice
@@ -38,12 +40,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     private String getDynamicPrefixedErrorMessage(Exception e) {
-        StackTraceElement[] stackTrace = e.getStackTrace();
-        return exceptionMessagePrefixes.entrySet()
-                .stream()
-                .filter(entry -> entry.getKey().getName().equals(stackTrace[0].getClassName()))
-                .map(entry -> String.format(entry.getValue(), e.getMessage()))
-                .findFirst()
-                .orElse(e.getMessage());
+        return Arrays.stream(e.getStackTrace())
+                .map(StackTraceElement::getClassName) // Extract class names from the stack trace
+                .map(className -> exceptionMessagePrefixes.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getKey().getName().equals(className)) // Match class name
+                        .map(entry -> String.format(entry.getValue(), e.getMessage())) // Format message
+                        .findFirst()
+                        .orElse(null))
+                .filter(Objects::nonNull) // Keep only non-null messages
+                .findFirst() // Return the first match
+                .orElse(e.getMessage()); // Default to exception message if no match
     }
 }

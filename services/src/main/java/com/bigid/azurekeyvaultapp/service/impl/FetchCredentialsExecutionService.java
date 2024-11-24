@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -47,9 +48,11 @@ public class FetchCredentialsExecutionService implements ExecutionService {
         SecretClient secretClient = getSecretClient(globalParamsMap, tokenCredential);
 
         // Fetch the secret from Azure Key Vault
+        Object customQuery = actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue());
+        Objects.requireNonNull(customQuery, "Custom query must not be empty");
         JsonNode rootNode;
         try {
-            rootNode = objectMapper.readTree(actionParamsMap.get(ActionParams.CREDENTIAL_PROVIDER_CUSTOM_QUERY.getValue()).toString());
+            rootNode = objectMapper.readTree(customQuery.toString());
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("custom query contains invalid JSON");
         }

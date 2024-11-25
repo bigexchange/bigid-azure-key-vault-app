@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class LogoController extends AbstractLogoController {
     public String getSideBarIconPath() {
-        return "side-bar-icon.png";
+        return "azure-key-vault.png";
     }
 
     public String getIconPath() {
-        return "icon.png";
+        return "azure-key-vault.png";
 
     }
 }

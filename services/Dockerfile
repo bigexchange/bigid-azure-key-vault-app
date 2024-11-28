@@ -1,4 +1,4 @@
-FROM cgr.dev/bigid.com/adoptium-jre:adoptium-openjdk-17
+FROM public.ecr.aws/docker/library/eclipse-temurin:17-jre-jammy
 
 COPY target/bigid-azure-key-vault-integration-app-*-SNAPSHOT.jar /usr/src/app.jar
 

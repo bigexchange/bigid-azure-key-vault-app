@@ -4,8 +4,8 @@ action:
 
 global:
   param:
-    client_id: "client_id"
-    client_secret: "client_secret"
-    tenant_id: "tenant_id"
-    scope: "https://vault.azure.net/.default"
-    azure_key_vault_url: "https://keyvaultname.vault.azure.net/"
+    client_id: "your-client-id"               # Replace with your Azure AD app client ID
+    client_secret: "your-client-secret"       # Replace with your Azure AD app client secret
+    tenant_id: "your-tenant-id"               # Replace with your Azure AD tenant ID
+    scope: "https://vault.azure.net/.default" # Azure Key Vault scope
+    azure_key_vault_url: "https://your-keyvault-name.vault.azure.net/" # Replace with your Key Vault URL

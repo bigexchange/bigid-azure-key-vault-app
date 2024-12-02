@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.yml")
-@Disabled
 class ExecutionControllerIT {
 
     @Value("${action.param.custom_query}")

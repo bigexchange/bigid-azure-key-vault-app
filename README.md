@@ -69,10 +69,10 @@ az account set --subscription "<your-subscription-id>"
 ```
 #### Add the Secret to Azure Key Vault: Replace <key-vault-name> with your Key Vault name:
 ```bash
+#--vault-name: The name of your Azure Key Vault.
+#--name: The name of the secret (my-secret).
+#--value: The JSON object containing the required data.
 az keyvault secret set --vault-name "<key-vault-name>" --name "my-secret" --value '{"principalId": "your_principal_id", "principal_secret_enc": "your_principal_secret", "tenantId": "your_tenant_id"}'
---vault-name: The name of your Azure Key Vault.
---name: The name of the secret (my-secret).
---value: The JSON object containing the required data.
 ```
 #### Verify the Secret Exists:
 ```bash

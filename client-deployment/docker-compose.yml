@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    image: bigid-azure-key-vault:latest
+    pull_policy: never
+    build:
+      context: ../services
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"

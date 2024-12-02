@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bigid-azure-key-vault
+  labels:
+    app: bigid-azure-key-vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bigid-azure-key-vault
+  template:
+    metadata:
+      labels:
+        app: bigid-azure-key-vault
+    spec:
+      containers:
+        - name: bigid-azure-key-vault
+          image: bigid-azure-key-vault:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8083

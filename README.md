@@ -32,6 +32,33 @@ run com.bigid.azurekeyvaultapp.AzureKeyVaultApplication from IDE
 $ docker build -t bigid-azure-key-vault-app:latest .
 $ docker run -p 8083:8083 bigid-azure-key-vault-app
 ```
+# Running a Spring Boot App with docker-compose
+```bash
+# Run docker-compose from client-deployment folder:
+$ docker-compose up
+```
+
+# Running a Spring Boot App with Kubernetes
+```bash
+# Build the Docker image:
+$ docker build -t bigid-azure-key-vault:latest .
+```
+```bash
+# If using Kind, load the locally built image into the Kind cluster:
+$ kind create cluster
+$ kind load docker-image bigid-azure-key-vault:latest
+```
+```bash
+# Apply the manifests from client-deployment folder:
+$ kubectl apply -f deployment.yaml
+$ kubectl apply -f service.yaml
+```
+```bash
+# Access the app:
+# Port forwarding to access the app from your local machine:
+$ kubectl port-forward service/bigid-azure-key-vault-service 8083:8083
+# Cluster IP: curl http://<cluster-ip>:8083
+```
 
 # Test
 

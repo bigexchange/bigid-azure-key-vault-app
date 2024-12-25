@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bigid</groupId>
-    <artifactId>bigid-azure-key-vault-integration-app</artifactId>
-    <version>2.0.176-SNAPSHOT</version>
-    <name>bigid-azure-key-vault-integration-app</name>
-    <description>BigID Azure Key Vault Integration App</description>
+    <artifactId>bigid-azure-key-vault-integration</artifactId>
+    <version>1.218.0-SNAPSHOT</version>
+    <name>bigid-azure-key-vault-integration</name>
+    <description>BigID Azure Key Vault Integration</description>
 
     <properties>
         <java.version>17</java.version>

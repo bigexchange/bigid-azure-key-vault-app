@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  bigid-azure-key-vault-integration:
+    build:
+      context: ..
+    image: bigexchange/bigid-azure-key-vault-integration:1.218.0
+    container_name: bigid-azure-key-vault-integration
+    ports:
+      - "8083:8083"
+    networks:
+      - scanner
+
+  bigid-scanner:
+    networks:
+      - scanner
+
+networks:
+  scanner:
+    driver: bridge

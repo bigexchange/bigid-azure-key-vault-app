@@ -21,7 +21,7 @@ $ mvn spring-boot:run
 ```
 ```bash
 # Running a Spring Boot JAR File
-$ java -jar target/bigid-azure-key-vault-integration-app-2.0.176-SNAPSHOT.jar
+$ java -jar target/bigid-azure-key-vault-integration-app-1.218.0-SNAPSHOT.jar
 ```
 ```bash
 # Running a Spring Boot Main class
@@ -29,8 +29,8 @@ run com.bigid.azurekeyvaultapp.AzureKeyVaultApplication from IDE
 ```
 ```bash
 # Running a Spring Boot App with Docker
-$ docker build -t bigid-azure-key-vault-app:latest .
-$ docker run -p 8083:8083 bigid-azure-key-vault-app
+$ docker build -t bigid-azure-key-vault-integration:latest .
+$ docker run -p 8083:8083 bigid-azure-key-vault-integration
 ```
 # Running a Spring Boot App with docker-compose
 ```bash

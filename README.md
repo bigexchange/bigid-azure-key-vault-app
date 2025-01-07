@@ -10,6 +10,7 @@ This application integrates with Azure Key Vault to securely manage and consume 
 ## Installation
 
 ```bash
+$ cd services
 $ mvn clean install
 ```
 
@@ -17,11 +18,13 @@ $ mvn clean install
 
 ```bash
 # Running a Spring Boot App with Maven
+$ cd services
 $ mvn spring-boot:run
 ```
 ```bash
 # Running a Spring Boot JAR File
-$ java -jar target/bigid-azure-key-vault-integration-app-1.218.0-SNAPSHOT.jar
+$ cd services
+$ java -jar target/bigid-azure-key-vault-integration-1.218.0-SNAPSHOT.jar
 ```
 ```bash
 # Running a Spring Boot Main class
@@ -29,18 +32,26 @@ run com.bigid.azurekeyvaultapp.AzureKeyVaultApplication from IDE
 ```
 ```bash
 # Running a Spring Boot App with Docker
+$ cd services
 $ docker build -t bigid-azure-key-vault-integration:latest .
 $ docker run -p 8083:8083 bigid-azure-key-vault-integration
 ```
 # Running a Spring Boot App with docker-compose
 ```bash
 # Run docker-compose from client-deployment folder:
-$ docker-compose up
+$ cd client-deployment
+$ docker-compose up -d
 ```
-
+# Stopping a Spring Boot App with docker-compose
+```bash
+# Run docker-compose from client-deployment folder:
+$ cd client-deployment
+$ docker-compose down
+```
 # Running a Spring Boot App with Kubernetes
 ```bash
 # Build the Docker image:
+$ cd services
 $ docker build -t bigid-azure-key-vault:latest .
 ```
 ```bash
@@ -50,6 +61,7 @@ $ kind load docker-image bigid-azure-key-vault:latest
 ```
 ```bash
 # Apply the manifests from client-deployment folder:
+$ cd client-deployment
 $ kubectl apply -f deployment.yaml
 $ kubectl apply -f service.yaml
 ```
@@ -64,6 +76,7 @@ $ kubectl port-forward service/bigid-azure-key-vault-service 8083:8083
 
 ```bash
 # unit tests
+$ cd services
 $ mvn test
 ```
 ## Test coverage
@@ -123,5 +136,6 @@ az keyvault secret show --vault-name "<key-vault-name>" --name "my-secret"
 ### 4. Fill application-test.yml with Azure Key Vault Credentials
 ### 5. Run the Integration Test
 ```bash
+$ cd services
 $ mvn test -Dtest=ExecutionControllerIT
 ```

@@ -17,7 +17,7 @@ replicaCount: 1
 
 image:
   registry: 835626702473.dkr.ecr.us-east-1.amazonaws.com
-  repository: bigexchange/bigid-azure-key-vault-integration
+  repository: bigexchange/bigid-azure-key-vault
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "1.218.0"

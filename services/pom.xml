@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bigid</groupId>
     <artifactId>bigid-azure-key-vault-integration</artifactId>
-    <version>1.218.0-SNAPSHOT</version>
+    <version>1.230.0-SNAPSHOT</version>
     <name>bigid-azure-key-vault-integration</name>
     <description>BigID Azure Key Vault Integration</description>
 

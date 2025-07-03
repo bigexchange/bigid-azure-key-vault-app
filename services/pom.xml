@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bigid</groupId>
     <artifactId>bigid-azure-key-vault-integration</artifactId>
-    <version>230.0-SNAPSHOT</version>
+    <version>231.0-SNAPSHOT</version>
     <name>bigid-azure-key-vault-integration</name>
     <description>BigID Azure Key Vault Integration</description>
 
@@ -89,32 +89,20 @@
         <dependency>
             <groupId>com.github.nagyesta.lowkey-vault</groupId>
             <artifactId>lowkey-vault-testcontainers</artifactId>
-            <version>2.5.58</version>
+            <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.nagyesta.lowkey-vault</groupId>
             <artifactId>lowkey-vault-client</artifactId>
-            <version>2.5.58</version>
+            <version>3.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
         </dependency>
-
-
-        <!--        Use this in order to get the infra from local jar dependency (external BigID developer)-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.bigid</groupId>-->
-        <!--            <artifactId>app-infrastructure</artifactId>-->
-        <!--            <version>1.0.138-SNAPSHOT</version>-->
-        <!--            <scope>system</scope>-->
-        <!--            <systemPath>-->
-        <!--                ${project.basedir}/src/main/resources/app-infrastructure-1.0.138-SNAPSHOT-jar-with-dependencies.jar-->
-        <!--            </systemPath>-->
-        <!--        </dependency>-->
 
     </dependencies>
 
@@ -164,29 +152,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--        Use this in order to get the infra from local jar dependency (external BigID developer)-->
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-install-plugin</artifactId>-->
-            <!--                <configuration>-->
-            <!--                    <groupId>com.bigid.appinfra</groupId>-->
-            <!--                    <artifactId>app-infrastructure</artifactId>-->
-            <!--                    <version>1.0.137-LOCAL</version>-->
-            <!--                    <packaging>jar</packaging>-->
-            <!--                    <file>${basedir}/src/main/resources/app-infrastructure-1.0.138-SNAPSHOT-jar-with-dependencies.jar</file>-->
-            <!--                    <generatePom>true</generatePom>-->
-            <!--                </configuration>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>install-jar-lib</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>install-file</goal>-->
-            <!--                        </goals>-->
-            <!--                        <phase>validate</phase>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
 
         </plugins>
     </build>

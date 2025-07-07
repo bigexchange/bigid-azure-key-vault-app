@@ -1,6 +1,6 @@
 {
   "app_name": "Azure Key Vault Integration",
-  "version": "231.0",
+  "version": "232.0",
   "description": "Exchange metadata between BigID and Azure Key Vault",
   "category": "Utility",
   "license_type": "FREE",

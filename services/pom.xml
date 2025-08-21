@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.0</version>
+        <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bigid</groupId>
     <artifactId>bigid-azure-key-vault-integration</artifactId>
-    <version>232.1-SNAPSHOT</version>
+    <version>235.0-SNAPSHOT</version>
     <name>bigid-azure-key-vault-integration</name>
     <description>BigID Azure Key Vault Integration</description>
 
@@ -82,7 +82,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.14.1</version>
+            <version>1.17.0</version>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>

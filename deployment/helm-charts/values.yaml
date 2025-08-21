@@ -20,7 +20,7 @@ image:
   repository: bigexchange/bigid-azure-key-vault
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "232.1"
+  tag: "232.2"
 
 imagePullSecrets: []
 nameOverride: "bigid-azure-key-vault-integration"

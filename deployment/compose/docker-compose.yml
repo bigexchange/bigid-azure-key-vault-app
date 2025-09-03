@@ -3,7 +3,7 @@ services:
   bigid-azure-key-vault-integration:
     build:
       context: ..
-    image: bigexchange/bigid-azure-key-vault-integration:235.0
+    image: bigexchange/bigid-azure-key-vault-integration:236.0
     container_name: bigid-azure-key-vault-integration
     ports:
       - "8083:8083"

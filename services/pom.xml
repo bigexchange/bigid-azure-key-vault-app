@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bigid</groupId>
     <artifactId>bigid-azure-key-vault-integration</artifactId>
-    <version>235.0-SNAPSHOT</version>
+    <version>236.0-SNAPSHOT</version>
     <name>bigid-azure-key-vault-integration</name>
     <description>BigID Azure Key Vault Integration</description>
 
@@ -31,6 +31,13 @@
                 <artifactId>classgraph</artifactId>
                 <version>4.8.174</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>4.2.4.Final</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -77,7 +84,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>11.0.9</version>
+            <version>11.0.10</version>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>

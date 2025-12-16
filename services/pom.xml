@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>3.5.8</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bigid</groupId>
     <artifactId>bigid-azure-key-vault-integration</artifactId>
-    <version>241.0-SNAPSHOT</version>
+    <version>244.0-SNAPSHOT</version>
     <name>bigid-azure-key-vault-integration</name>
     <description>BigID Azure Key Vault Integration</description>
 
@@ -46,6 +46,7 @@
                 <artifactId>netty-handler</artifactId>
                 <version>4.2.6.Final</version>
             </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -87,7 +88,7 @@
         <dependency>
             <groupId>com.bigid</groupId>
             <artifactId>app-infrastructure</artifactId>
-            <version>2.12.214-RELEASE</version>
+            <version>2.4.243-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>

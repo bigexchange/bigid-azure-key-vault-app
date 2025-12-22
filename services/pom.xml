@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.bigid</groupId>
             <artifactId>app-infrastructure</artifactId>
-            <version>2.4.243-RELEASE</version>
+            <version>2.12.214-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>

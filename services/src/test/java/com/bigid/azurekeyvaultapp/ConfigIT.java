@@ -31,7 +31,7 @@ public abstract class ConfigIT {
     @BeforeAll
     static void startContainer() {
         // Specify the Docker image for Lowkey Vault
-        DockerImageName imageName = DockerImageName.parse("nagyesta/lowkey-vault:3.2.0");
+        DockerImageName imageName = DockerImageName.parse("nagyesta/lowkey-vault:7.1.32");
 
         // Initialize the container using the builder
         vaultContainer = LowkeyVaultContainerBuilder.lowkeyVault(imageName)

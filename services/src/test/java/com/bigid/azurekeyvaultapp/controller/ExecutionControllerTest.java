@@ -48,7 +48,7 @@ class ExecutionControllerTest extends ConfigIT {
         doReturn(new BasicAuthenticationCredential(vaultContainer.getUsername(),
                 vaultContainer.getPassword()))
                 .when(azureKeyVaultTokenService)
-                .getTokenCredential(any());
+                .getClientSecretCredential(any());
     }
 
     @Test

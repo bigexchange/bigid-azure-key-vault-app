@@ -29,7 +29,8 @@
       "is_mandatory": true,
       "input_type": "singleSelection",
       "input_items": [
-        "Client Credentials"
+        "Client Credentials",
+        "Managed Identity"
       ]
     },
     {
@@ -37,30 +38,30 @@
       "param_friendly_name": "Client ID",
       "param_type": "String",
       "is_cleartext": false,
-      "param_description": "Client ID for authenticating with Azure Key Vault",
+      "param_description": "Client ID for authenticating with Azure Key Vault. Required for Client Credentials; optional for user-assigned Managed Identity.",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": true
+      "is_mandatory": false
     },
     {
       "param_name": "tenant_id",
       "param_friendly_name": "Tenant ID",
       "param_type": "String",
       "is_cleartext": false,
-      "param_description": "Tenant ID for authenticating with Azure Key Vault",
+      "param_description": "Tenant ID for authenticating with Azure Key Vault. Required for Client Credentials only.",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": true
+      "is_mandatory": false
     },
     {
       "param_name": "client_secret",
       "param_friendly_name": "Client Secret",
       "param_type": "String",
       "is_cleartext": false,
-      "param_description": "Client Secret for authenticating with Azure Key Vault",
+      "param_description": "Client Secret for authenticating with Azure Key Vault. Required for Client Credentials only.",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": true
+      "is_mandatory": false
     },
     {
       "param_name": "azure_key_vault_url",

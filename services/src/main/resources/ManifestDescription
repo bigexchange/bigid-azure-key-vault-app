@@ -15,6 +15,8 @@ global_params - an array of parameters which are general and should be used in a
     hint - a short example of an input for the parameter
     param_priority
     is_mandatory - boolean
+    parent_param_name - (optional) the name of the parameter that controls the visibility of this field. When set, this field is only shown when the parent parameter's value matches parent_param_value
+    parent_param_value - (optional) the value of the parent parameter that makes this field visible. Used together with parent_param_name
 
 actions - an array of the actions that the app can perform. Every action contains:
     Action_id - the name of the action as it is related in the app

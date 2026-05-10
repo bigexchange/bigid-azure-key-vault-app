@@ -51,7 +51,9 @@
       "param_description": "Tenant ID for authenticating with Azure Key Vault. Required for Client Credentials only.",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true,
+      "parent_param_name": "authentication_method",
+      "parent_param_value": "Client Credentials"
     },
     {
       "param_name": "client_secret",
@@ -61,7 +63,9 @@
       "param_description": "Client Secret for authenticating with Azure Key Vault. Required for Client Credentials only.",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true,
+      "parent_param_name": "authentication_method",
+      "parent_param_value": "Client Credentials"
     },
     {
       "param_name": "azure_key_vault_url",

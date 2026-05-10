@@ -1,20 +1,15 @@
 package com.bigid.azurekeyvaultapp.service.impl;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.identity.ManagedIdentityCredential;
 import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.ParamDetails;
-import com.bigid.azurekeyvaultapp.constant.GlobalParams;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class AzureKeyVaultTokenServiceTest {
@@ -51,33 +46,45 @@ class AzureKeyVaultTokenServiceTest {
     }
 
     @Test
-    void getManagedIdentityCredential_WithoutClientId_ShouldReturnSystemAssignedCredential() {
-        Map<String, String> params = new HashMap<>();
-        params.put(GlobalParams.CLIENT_ID.getValue(), null);
+    void fetchAccessToken_WithClientCredentials_MissingClientId_ShouldThrowIllegalArgumentException() {
+        ExecutionContext executionContext = new ExecutionContext();
+        executionContext.setGlobalParams(List.of(
+                createParamDetails("authentication_method", "Client Credentials"),
+                createParamDetails("tenant_id", "some-tenant-id"),
+                createParamDetails("client_secret", "some-secret")
+        ));
 
-        TokenCredential credential = tokenService.getManagedIdentityCredential(params);
-
-        assertInstanceOf(ManagedIdentityCredential.class, credential);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> tokenService.fetchAccessToken(executionContext));
+        assert ex.getMessage().contains("client_id");
     }
 
     @Test
-    void getManagedIdentityCredential_WithClientId_ShouldReturnUserAssignedCredential() {
-        Map<String, String> params = new HashMap<>();
-        params.put(GlobalParams.CLIENT_ID.getValue(), "some-client-id");
+    void fetchAccessToken_WithClientCredentials_MissingTenantId_ShouldThrowIllegalArgumentException() {
+        ExecutionContext executionContext = new ExecutionContext();
+        executionContext.setGlobalParams(List.of(
+                createParamDetails("authentication_method", "Client Credentials"),
+                createParamDetails("client_id", "some-client-id"),
+                createParamDetails("client_secret", "some-secret")
+        ));
 
-        TokenCredential credential = tokenService.getManagedIdentityCredential(params);
-
-        assertInstanceOf(ManagedIdentityCredential.class, credential);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> tokenService.fetchAccessToken(executionContext));
+        assert ex.getMessage().contains("tenant_id");
     }
 
     @Test
-    void getManagedIdentityCredential_WithBlankClientId_ShouldReturnSystemAssignedCredential() {
-        Map<String, String> params = new HashMap<>();
-        params.put(GlobalParams.CLIENT_ID.getValue(), "   ");
+    void fetchAccessToken_WithClientCredentials_MissingClientSecret_ShouldThrowIllegalArgumentException() {
+        ExecutionContext executionContext = new ExecutionContext();
+        executionContext.setGlobalParams(List.of(
+                createParamDetails("authentication_method", "Client Credentials"),
+                createParamDetails("client_id", "some-client-id"),
+                createParamDetails("tenant_id", "some-tenant-id")
+        ));
 
-        TokenCredential credential = tokenService.getManagedIdentityCredential(params);
-
-        assertInstanceOf(ManagedIdentityCredential.class, credential);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> tokenService.fetchAccessToken(executionContext));
+        assert ex.getMessage().contains("client_secret");
     }
 
     // Helper method to create ParamDetails

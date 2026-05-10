@@ -9,6 +9,7 @@ import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.azurekeyvaultapp.constant.GlobalParams;
 import com.bigid.azurekeyvaultapp.service.KeyVaultTokenService;
 import com.bigid.azurekeyvaultapp.util.ParamsMapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -51,19 +52,15 @@ public class AzureKeyVaultTokenService implements KeyVaultTokenService {
     }
 
     private void validateClientCredentialsParams(Map<String, String> globalParamsMap) {
-        if (isBlank(globalParamsMap.get(GlobalParams.CLIENT_ID.getValue()))) {
+        if (StringUtils.isBlank(globalParamsMap.get(GlobalParams.CLIENT_ID.getValue()))) {
             throw new IllegalArgumentException("client_id is required for Client Credentials authentication");
         }
-        if (isBlank(globalParamsMap.get(GlobalParams.TENANT_ID.getValue()))) {
+        if (StringUtils.isBlank(globalParamsMap.get(GlobalParams.TENANT_ID.getValue()))) {
             throw new IllegalArgumentException("tenant_id is required for Client Credentials authentication");
         }
-        if (isBlank(globalParamsMap.get(GlobalParams.CLIENT_SECRET.getValue()))) {
+        if (StringUtils.isBlank(globalParamsMap.get(GlobalParams.CLIENT_SECRET.getValue()))) {
             throw new IllegalArgumentException("client_secret is required for Client Credentials authentication");
         }
-    }
-
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
     }
 
 }

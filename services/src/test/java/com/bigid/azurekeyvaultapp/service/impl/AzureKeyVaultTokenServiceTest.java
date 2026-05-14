@@ -2,6 +2,9 @@ package com.bigid.azurekeyvaultapp.service.impl;
 
 import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.ParamDetails;
+import com.bigid.azurekeyvaultapp.service.provider.ClientCredentialsProvider;
+import com.bigid.azurekeyvaultapp.service.provider.ManagedIdentityProvider;
+import com.bigid.azurekeyvaultapp.validator.ClientCredentialsParamsValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +21,10 @@ class AzureKeyVaultTokenServiceTest {
 
     @BeforeEach
     void setUp() {
-        tokenService = new AzureKeyVaultTokenService();
+        tokenService = new AzureKeyVaultTokenService(List.of(
+                new ClientCredentialsProvider(new ClientCredentialsParamsValidator()),
+                new ManagedIdentityProvider()
+        ));
     }
 
     @Test

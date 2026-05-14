@@ -7,8 +7,8 @@ import com.bigid.appinfrastructure.dto.ParamDetails;
 import com.bigid.azurekeyvaultapp.ConfigIT;
 import com.bigid.azurekeyvaultapp.constant.ActionParams;
 import com.bigid.azurekeyvaultapp.constant.GlobalParams;
-import com.bigid.azurekeyvaultapp.service.impl.AzureKeyVaultTokenService;
 import com.bigid.azurekeyvaultapp.service.impl.FetchCredentialsExecutionService;
+import com.bigid.azurekeyvaultapp.service.provider.ClientCredentialsProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,10 +34,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ExecutionControllerTest extends ConfigIT {
 
-    @SpyBean
+    @MockitoSpyBean
     private FetchCredentialsExecutionService fetchCredentialsExecutionService;
-    @SpyBean
-    private AzureKeyVaultTokenService azureKeyVaultTokenService;
+    @MockitoSpyBean
+    private ClientCredentialsProvider clientCredentialsProvider;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -47,8 +47,8 @@ class ExecutionControllerTest extends ConfigIT {
     public void setup() {
         doReturn(new BasicAuthenticationCredential(vaultContainer.getUsername(),
                 vaultContainer.getPassword()))
-                .when(azureKeyVaultTokenService)
-                .getClientSecretCredential(any());
+                .when(clientCredentialsProvider)
+                .create(any());
     }
 
     @Test

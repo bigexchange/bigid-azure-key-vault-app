@@ -4,26 +4,25 @@ import com.bigid.appinfrastructure.dto.ExecutionContext;
 import com.bigid.appinfrastructure.dto.ParamDetails;
 import com.bigid.azurekeyvaultapp.service.provider.ClientCredentialsProvider;
 import com.bigid.azurekeyvaultapp.service.provider.ManagedIdentityProvider;
-import com.bigid.azurekeyvaultapp.validator.ClientCredentialsParamsValidator;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(MockitoExtension.class)
 class AzureKeyVaultTokenServiceTest {
 
     private AzureKeyVaultTokenService tokenService;
 
     @BeforeEach
     void setUp() {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         tokenService = new AzureKeyVaultTokenService(List.of(
-                new ClientCredentialsProvider(new ClientCredentialsParamsValidator()),
-                new ManagedIdentityProvider()
+                new ClientCredentialsProvider(validator),
+                new ManagedIdentityProvider(validator)
         ));
     }
 

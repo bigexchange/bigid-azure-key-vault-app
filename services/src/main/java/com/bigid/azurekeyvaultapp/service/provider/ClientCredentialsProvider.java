@@ -3,18 +3,21 @@ package com.bigid.azurekeyvaultapp.service.provider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.bigid.azurekeyvaultapp.constant.GlobalParams;
-import com.bigid.azurekeyvaultapp.validator.ClientCredentialsParamsValidator;
+import com.bigid.azurekeyvaultapp.dto.ClientCredentialsParams;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class ClientCredentialsProvider implements CredentialProvider {
 
-    private final ClientCredentialsParamsValidator clientCredentialsParamsValidator;
+    private final Validator validator;
 
-    public ClientCredentialsProvider(ClientCredentialsParamsValidator clientCredentialsParamsValidator) {
-        this.clientCredentialsParamsValidator = clientCredentialsParamsValidator;
+    public ClientCredentialsProvider(Validator validator) {
+        this.validator = validator;
     }
 
     @Override
@@ -24,11 +27,23 @@ public class ClientCredentialsProvider implements CredentialProvider {
 
     @Override
     public TokenCredential create(Map<String, String> globalParamsMap) {
-        clientCredentialsParamsValidator.validate(globalParamsMap);
+        ClientCredentialsParams params = new ClientCredentialsParams(
+                globalParamsMap.get(GlobalParams.CLIENT_ID.getValue()),
+                globalParamsMap.get(GlobalParams.TENANT_ID.getValue()),
+                globalParamsMap.get(GlobalParams.CLIENT_SECRET.getValue())
+        );
+        validate(params);
         return new ClientSecretCredentialBuilder()
-                .clientId(globalParamsMap.get(GlobalParams.CLIENT_ID.getValue()))
-                .clientSecret(globalParamsMap.get(GlobalParams.CLIENT_SECRET.getValue()))
-                .tenantId(globalParamsMap.get(GlobalParams.TENANT_ID.getValue()))
+                .clientId(params.clientId())
+                .clientSecret(params.clientSecret())
+                .tenantId(params.tenantId())
                 .build();
+    }
+
+    private <T> void validate(T target) {
+        Set<ConstraintViolation<T>> violations = validator.validate(target);
+        if (!violations.isEmpty()) {
+            throw new IllegalArgumentException(violations.iterator().next().getMessage());
+        }
     }
 }

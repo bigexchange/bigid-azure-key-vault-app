@@ -38,10 +38,10 @@
       "param_friendly_name": "Client ID",
       "param_type": "String",
       "is_cleartext": false,
-      "param_description": "Client ID for authenticating with Azure Key Vault. Required for Client Credentials; optional for user-assigned Managed Identity.",
+      "param_description": "Client ID for authenticating with Azure Key Vault. Required for Client Credentials and user-assigned Managed Identity",
       "default_value": "",
       "param_priority": "primary",
-      "is_mandatory": false
+      "is_mandatory": true
     },
     {
       "param_name": "tenant_id",

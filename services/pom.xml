@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.bigid</groupId>
     <artifactId>bigid-azure-key-vault-integration</artifactId>
-    <version>260.0-SNAPSHOT</version>
+    <version>261.0-SNAPSHOT</version>
     <name>bigid-azure-key-vault-integration</name>
     <description>BigID Azure Key Vault Integration</description>
 
@@ -19,7 +19,7 @@
         <java.version>17</java.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
         <jackson-bom.version>2.22.1</jackson-bom.version>
-        <netty.version>4.2.15.Final</netty.version>
+        <netty.version>4.2.16.Final</netty.version>
         <tomcat.version>10.1.57</tomcat.version>
     </properties>
 

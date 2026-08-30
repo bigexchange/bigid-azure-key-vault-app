@@ -1,3 +1,4 @@
+<!-- sanity test for CVE resolver GitHub flow - safe to close, testing only -->
 # Azure Key Vault Integration
 
 ## Description

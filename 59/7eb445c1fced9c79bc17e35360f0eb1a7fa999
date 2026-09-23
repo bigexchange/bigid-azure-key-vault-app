@@ -1,0 +1,22 @@
+deployment/compose/docker-compose.yml
+  h_4dd844e804ae89 6
+deployment/helm-charts/Chart.yaml
+  h_4dd844e804ae89 24
+deployment/helm-charts/values.yaml
+  h_4dd844e804ae89 23
+services/pom.xml
+  h_4dd844e804ae89 14
+services/src/main/resources/Manifest
+  h_4dd844e804ae89 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "597eb445c1fced9c79bc17e35360f0eb1a7fa999",
+  "prompts": {},
+  "humans": {
+    "h_4dd844e804ae89": {
+      "author": "Jacob Yeger <jyeger@bigid.com>"
+    }
+  }
+}
